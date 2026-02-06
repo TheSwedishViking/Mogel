@@ -16,10 +16,6 @@ namespace VäderUppgift
         {
             string url = @"B:\Downloads,Pictures,Videos\Downloads\tempdata5-med fel\tempdata5-med fel.txt";
             string oscarUrl = @"C:\Users\oxlyt\Desktop\tempdata5-med fel.txt";
-            string htmlContent = File.ReadAllText(oscarUrl);
-
-            List <Regex> patterinList = new();
-
 
             //\\S+   längre strängar
             //\d{4}-\d{2}-\d{2} datum
@@ -31,9 +27,7 @@ namespace VäderUppgift
 
             //-\d{2}- extra för månad
 
-
-
-
+      
             //Datum
             List<DateOnly> datumlist = new();
             Regex regexDatum = new Regex("\\d{4}-\\d{2}-\\d{2}");
@@ -52,114 +46,165 @@ namespace VäderUppgift
 
             //Fukt
             List<short> luftfuktighetList = new();
-            Regex regexFukt = new Regex("[0-9]{1,2}$");
+            Regex regexFukt = new Regex("(?<=[0-9]{1,2}\\.[0-9]{1}.)([0-9]{1,2})");
 
+            string weatherData = File.ReadAllText(oscarUrl);
+
+            List<Regex> patterinList = new();
+            List<string> weatherLines = weatherData.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            Regex entireRowFormatDay = new Regex("(\\d{4}-\\d{2}-\\d{2}\\s\\d{1,2}:\\d{1,2}:\\d{1,2},\\D{1,4}[0-9]{1,2}.[0-9]{1,2},\\d[0-9]{1,2})");
+            List<string> weatherOutside = new List<string>();
+
+            Dictionary<DateOnly, List<EveryDataBracket>> dataDictionary = new Dictionary<DateOnly,List< EveryDataBracket>>();
+
+            foreach (var weatline in weatherLines)
+            {
+                try
+                {
+
+                    if (Regex.IsMatch(weatline, regexDatum.ToString()))
+                    {
+                        var newDate = regexDatum.Match(weatline);
+                        DateOnly onlyDate = DateOnly.Parse(newDate.Value);
+                        //Console.WriteLine("Hittade datum: " + newDate.Value);
+                        if(!dataDictionary.TryGetValue(onlyDate, out var testList))
+                        {
+                            testList = new List<EveryDataBracket>();
+                            dataDictionary[onlyDate] = testList;
+                        }
+                        EveryDataBracket dataBracket = new EveryDataBracket();
+
+                        //Fukt
+                        if (Regex.IsMatch(weatline, regexFukt.ToString()))
+                        {
+                            var humidity = regexFukt.Match(weatline);
+                            short humidityValue = short.Parse(humidity.ToString());
+                            dataBracket.AirHumidity = humidityValue;
+                        }
+
+                        dataDictionary[onlyDate].Add(dataBracket);
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+            foreach(var day in dataDictionary.Keys)
+            {
+                Console.WriteLine($"Dag {day} count {dataDictionary[day].Count} hade fuktigheter registerade av ");
+                foreach(var humidity  in dataDictionary[day])
+                {
+                    Console.WriteLine($"\tLuftfuktighet: {humidity.AirHumidity}");
+                }
+            }
 
             patterinList.AddRange(regexDatum, regexTid , regexPlats, regexTemp , regexFukt);
 
+         
+            ////print
+            //foreach (var item in patterinList)
+            //{
+            //    Regex regex = new Regex(item.ToString());
+            //    MatchCollection matches = regex.Matches(htmlContent);
+
+            //    for (int i = 0; i < 100000; i++)
+            //    {
+            //        //Console.WriteLine(matches[i]);
+            //        try
+            //        {
+            //            if (regexDatum.IsMatch(matches[i].ToString()))
+            //            {
+            //                //Console.WriteLine(item.ToString());
+            //                if (!datumlist.Contains(DateOnly.Parse(matches[i].ToString())))
+            //                {
+            //                    datumlist.Add(DateOnly.Parse(matches[i].ToString()));
+            //                }
+            //                continue;
+            //            }        //DateMatch   
+            //            if (regexTid.IsMatch(matches[i].ToString()))
+            //            {
+            //                //Console.WriteLine(matches[i].ToString());
+            //                //fel format
+            //                if (matches[i].ToString().StartsWith("24"))
+            //                {
+            //                    //Console.WriteLine("XXXXXXXXXXXXXXXXXXXXXXX");
+
+            //                    //Console.WriteLine($"Old time value which should be wrong: {matches[i].ToString()}");
+
+            //                    var output = Regex.Replace(matches[i].ToString(), "^24", "00");
+
+            //                    //Console.WriteLine($"Converted value from old: {output}");
+            //                    //Console.ReadLine();
+            //                    tidList.Add(TimeOnly.Parse(output));
 
 
-            //print
-            foreach (var item in patterinList)
-            {
-                Regex regex = new Regex(item.ToString());
-                MatchCollection matches = regex.Matches(htmlContent);
+            //                }
+            //                //rätt format
+            //                else
+            //                {
+            //                    tidList.Add(TimeOnly.Parse(matches[i].ToString()));
+            //                }
 
-                for (int i = 0; i < 100000; i++)
-                {
-                    //Console.WriteLine(matches[i]);
-                    try
-                    {
-                        if (regexDatum.IsMatch(matches[i].ToString()))
-                        {
-                            //Console.WriteLine(item.ToString());
-                            if (!datumlist.Contains(DateOnly.Parse(matches[i].ToString())))
-                            {
-                                datumlist.Add(DateOnly.Parse(matches[i].ToString()));
-                            }
-                            continue;
-                        }        //DateMatch   
-                        if (regexTid.IsMatch(matches[i].ToString()))
-                        {
-                            //Console.WriteLine(matches[i].ToString());
-                            //fel format
-                            if (matches[i].ToString().StartsWith("24"))
-                            {
-                                //Console.WriteLine("XXXXXXXXXXXXXXXXXXXXXXX");
+            //                return;
+            //            }  //TimeMatch
+            //            if (regexPlats.IsMatch(matches[i].ToString()))
+            //            {
+            //                //Console.WriteLine(matches[i].ToString());
 
-                                //Console.WriteLine($"Old time value which should be wrong: {matches[i].ToString()}");
+            //                platsList.Add(matches[i].ToString());
+            //                return;
+            //            }//PlatsMatch
+            //            if (regexTemp.IsMatch(matches[i].Value))
+            //            {
+            //                //Console.WriteLine($"Input temp : {matches[i].Value}");
+            //                //Console.ReadLine();
+            //                string addedF = matches[i].Value.ToString() + "f";
+            //                //Console.WriteLine("Convert value = " + addedF + " " + addedF.ToString().ToString());
+            //                //Console.WriteLine();
+            //                float test = 24.5f;
+            //                //Console.WriteLine(matches[i].ToString());
+            //                if (float.TryParse(matches[i].ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float value))
+            //                {
+            //                    //Console.WriteLine("Matched format");
+            //                    //Console.ReadLine();
 
-                                var output = Regex.Replace(matches[i].ToString(), "^24", "00");
+            //                    //add to list
+            //                    tempList.Add(value);
+            //                }
+            //                else
+            //                {
+            //                    Console.WriteLine("Did not match format");
+            //                    Console.ReadLine();
+            //                }
 
-                                //Console.WriteLine($"Converted value from old: {output}");
-                                //Console.ReadLine();
-                                tidList.Add(TimeOnly.Parse(output));
+            //                continue;
+            //            }
+            //            //TempMatch
+            //            Console.WriteLine("FUKT DELEN!");
+            //            Console.ReadLine();
+            //            if (regexFukt.IsMatch(matches[i].Value))
+            //            {
+            //                Console.WriteLine(matches[i].ToString());
+            //                short fuktValue = short.Parse(matches[i].Value);
+            //                tempList.Add(fuktValue);
+            //                continue;
+            //            }//Fukt
+            //            Console.WriteLine();
+            //        }
+            //        catch(ArgumentOutOfRangeException ex)
+            //        {
 
-
-                            }
-                            //rätt format
-                            else
-                            {
-                                tidList.Add(TimeOnly.Parse(matches[i].ToString()));
-                            }
-
-                            continue;
-                        }  //TimeMatch
-                        if (regexPlats.IsMatch(matches[i].ToString()))
-                        {
-                            //Console.WriteLine(matches[i].ToString());
-
-                            platsList.Add(matches[i].ToString());
-                            continue;
-                        }//PlatsMatch
-                        if (regexTemp.IsMatch(matches[i].Value))
-                        {
-                            //Console.WriteLine($"Input temp : {matches[i].Value}");
-                            //Console.ReadLine();
-                            string addedF = matches[i].Value.ToString() + "f";
-                            //Console.WriteLine("Convert value = " + addedF + " " + addedF.ToString().ToString());
-                            //Console.WriteLine();
-                            float test = 24.5f;
-                            //Console.WriteLine(matches[i].ToString());
-                            if (float.TryParse(matches[i].ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float value))
-                            {
-                                //Console.WriteLine("Matched format");
-                                //Console.ReadLine();
-
-                                //add to list
-                                tempList.Add(value);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Did not match format");
-                                Console.ReadLine();
-                            }
-
-                            continue;
-                        }
-                        //TempMatch
-                        Console.WriteLine("FUKT DELEN!");
-                        Console.ReadLine();
-                        if (regexFukt.IsMatch(matches[i].Value))
-                        {
-                            Console.WriteLine(matches[i].ToString());
-                            short fuktValue = short.Parse(matches[i].Value);
-                            tempList.Add(fuktValue);
-                            continue;
-                        }//Fukt
-                        Console.WriteLine();
-                    }
-                    catch(ArgumentOutOfRangeException ex)
-                    {
-
-                        Console.WriteLine($"Maybe out of range? {ex.Message} í: {i}");
-                    }
-                    catch(Exception e)
-                    {
-                        Console.WriteLine($"Excetoption :{e.Message}");
-                    }
+            //            Console.WriteLine($"Maybe out of range? {ex.Message} í: {i}");
+            //        }
+            //        catch(Exception e)
+            //        {
+            //            Console.WriteLine($"Excetoption :{e.Message}");
+            //        }
                     
-                    }
+            //        }
                 
                    
 
@@ -206,4 +251,3 @@ namespace VäderUppgift
         }
 
     }
-}

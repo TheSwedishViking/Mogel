@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\oxlyt\\Source\\Repos\\Mogel\\VäderUppgift.csproj": {}
+    "C:\\Users\\oxlyt\\source\\repos\\Mogel\\VäderUppgift.csproj": {}
   },
   "projects": {
-    "C:\\Users\\oxlyt\\Source\\Repos\\Mogel\\VäderUppgift.csproj": {
+    "C:\\Users\\oxlyt\\source\\repos\\Mogel\\VäderUppgift.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\oxlyt\\Source\\Repos\\Mogel\\VäderUppgift.csproj",
+        "projectUniqueName": "C:\\Users\\oxlyt\\source\\repos\\Mogel\\VäderUppgift.csproj",
         "projectName": "VäderUppgift",
-        "projectPath": "C:\\Users\\oxlyt\\Source\\Repos\\Mogel\\VäderUppgift.csproj",
+        "projectPath": "C:\\Users\\oxlyt\\source\\repos\\Mogel\\VäderUppgift.csproj",
         "packagesPath": "C:\\Users\\oxlyt\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\oxlyt\\Source\\Repos\\Mogel\\obj\\",
         "projectStyle": "PackageReference",

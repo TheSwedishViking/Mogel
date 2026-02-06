@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VäderUppgift")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dc973990223af97f405609c1eec11a2560c00b33")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b76d7987be3585c4f9bcfa78b8c48cefd78bf5cb")]
 [assembly: System.Reflection.AssemblyProductAttribute("VäderUppgift")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VäderUppgift")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
