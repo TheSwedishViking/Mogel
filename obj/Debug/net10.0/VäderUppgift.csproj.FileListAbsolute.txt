@@ -1,0 +1,14 @@
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\bin\Debug\net10.0\VäderUppgift.exe
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\bin\Debug\net10.0\VäderUppgift.deps.json
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\bin\Debug\net10.0\VäderUppgift.runtimeconfig.json
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\bin\Debug\net10.0\VäderUppgift.dll
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\bin\Debug\net10.0\VäderUppgift.pdb
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\obj\Debug\net10.0\VäderUppgift.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\obj\Debug\net10.0\VäderUppgift.AssemblyInfoInputs.cache
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\obj\Debug\net10.0\VäderUppgift.AssemblyInfo.cs
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\obj\Debug\net10.0\VäderUppgift.csproj.CoreCompileInputs.cache
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\obj\Debug\net10.0\VäderUppgift.dll
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\obj\Debug\net10.0\refint\VäderUppgift.dll
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\obj\Debug\net10.0\VäderUppgift.pdb
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\obj\Debug\net10.0\VäderUppgift.genruntimeconfig.cache
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\obj\Debug\net10.0\ref\VäderUppgift.dll
