@@ -6,18 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Globalization;
 
 namespace VäderUppgift
 {
     internal class Temp
     {
-
-
         public static void TempRun()
         {
             string url = @"B:\Downloads,Pictures,Videos\Downloads\tempdata5-med fel\tempdata5-med fel.txt";
-
-            string htmlContent = File.ReadAllText(url);
+            string oscarUrl = @"C:\Users\oxlyt\Desktop\tempdata5-med fel.txt";
+            string htmlContent = File.ReadAllText(oscarUrl);
 
             List <Regex> patterinList = new();
 
@@ -45,7 +44,7 @@ namespace VäderUppgift
 
             //regexPlats
             List<string> platsList = new();
-            Regex regexPlats = new Regex("[A-Za-z]");
+            Regex regexPlats = new Regex("[A-Za-z]{3,4}");
 
             //Temp
             List<float> tempList = new();
@@ -58,10 +57,6 @@ namespace VäderUppgift
 
             patterinList.AddRange(regexDatum, regexTid , regexPlats, regexTemp , regexFukt);
 
-            
-
-
-
 
 
             //print
@@ -72,51 +67,101 @@ namespace VäderUppgift
 
                 for (int i = 0; i < 100000; i++)
                 {
-                    Console.WriteLine(matches[i]);
-                    if (regexDatum.IsMatch(matches[i].ToString()))
+                    //Console.WriteLine(matches[i]);
+                    try
                     {
-                        //Console.WriteLine(item.ToString());
-                        if (!datumlist.Contains(DateOnly.Parse(matches[i].ToString())))
+                        if (regexDatum.IsMatch(matches[i].ToString()))
                         {
-                            datumlist.Add(DateOnly.Parse(matches[i].ToString()));
-                        }
-                        continue;
-                    }        //DateMatch   
-                    if (regexTid.IsMatch(matches[i].ToString()))
-                    {
-                        Console.WriteLine(matches[i].ToString());
-                        if(matches[i].ToString().StartsWith("24"))
+                            //Console.WriteLine(item.ToString());
+                            if (!datumlist.Contains(DateOnly.Parse(matches[i].ToString())))
+                            {
+                                datumlist.Add(DateOnly.Parse(matches[i].ToString()));
+                            }
+                            continue;
+                        }        //DateMatch   
+                        if (regexTid.IsMatch(matches[i].ToString()))
                         {
-                            Console.WriteLine("XXXXXXXXXXXXXXXXXXXXXXX");
-                            matches[i].ToString().Replace("24", "00");
+                            //Console.WriteLine(matches[i].ToString());
+                            //fel format
+                            if (matches[i].ToString().StartsWith("24"))
+                            {
+                                //Console.WriteLine("XXXXXXXXXXXXXXXXXXXXXXX");
+
+                                //Console.WriteLine($"Old time value which should be wrong: {matches[i].ToString()}");
+
+                                var output = Regex.Replace(matches[i].ToString(), "^24", "00");
+
+                                //Console.WriteLine($"Converted value from old: {output}");
+                                //Console.ReadLine();
+                                tidList.Add(TimeOnly.Parse(output));
+
+
+                            }
+                            //rätt format
+                            else
+                            {
+                                tidList.Add(TimeOnly.Parse(matches[i].ToString()));
+                            }
+
+                            continue;
+                        }  //TimeMatch
+                        if (regexPlats.IsMatch(matches[i].ToString()))
+                        {
+                            //Console.WriteLine(matches[i].ToString());
+
+                            platsList.Add(matches[i].ToString());
+                            continue;
+                        }//PlatsMatch
+                        if (regexTemp.IsMatch(matches[i].Value))
+                        {
+                            //Console.WriteLine($"Input temp : {matches[i].Value}");
+                            //Console.ReadLine();
+                            string addedF = matches[i].Value.ToString() + "f";
+                            //Console.WriteLine("Convert value = " + addedF + " " + addedF.ToString().ToString());
+                            //Console.WriteLine();
+                            float test = 24.5f;
+                            //Console.WriteLine(matches[i].ToString());
+                            if (float.TryParse(matches[i].ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float value))
+                            {
+                                //Console.WriteLine("Matched format");
+                                //Console.ReadLine();
+
+                                //add to list
+                                tempList.Add(value);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Did not match format");
+                                Console.ReadLine();
+                            }
+
+                            continue;
                         }
-                        tidList.Add(TimeOnly.Parse(matches[i].ToString()));
-                        continue;
-                    }  //TimeMatch
-                    if (regexPlats.IsMatch(matches[i].ToString()))
+                        //TempMatch
+                        Console.WriteLine("FUKT DELEN!");
+                        Console.ReadLine();
+                        if (regexFukt.IsMatch(matches[i].Value))
+                        {
+                            Console.WriteLine(matches[i].ToString());
+                            short fuktValue = short.Parse(matches[i].Value);
+                            tempList.Add(fuktValue);
+                            continue;
+                        }//Fukt
+                        Console.WriteLine();
+                    }
+                    catch(ArgumentOutOfRangeException ex)
                     {
-                        Console.WriteLine(matches[i].ToString());
 
-                        platsList.Add(matches[i].ToString());
-                        continue;
-                    }//PlatsMatch
-                    if (regexTemp.IsMatch(matches[i].Value))
+                        Console.WriteLine($"Maybe out of range? {ex.Message} í: {i}");
+                    }
+                    catch(Exception e)
                     {
-                        Console.WriteLine(matches[i].ToString());
-
-                        float value = float.Parse(matches[i].Value);
-                        tempList.Add(value);
-                        continue;
-                    }//TempMatch
-                    if (regexFukt.IsMatch(matches[i].Value))
-                    {
-                        Console.WriteLine(matches[i].ToString());
-                        short fuktValue = short.Parse(matches[i].Value);
-                        tempList.Add(fuktValue);
-                        continue;
-                    }//Fukt
-                    Console.WriteLine();
-                }
+                        Console.WriteLine($"Excetoption :{e.Message}");
+                    }
+                    
+                    }
+                
+                   
 
 
                 //for(int k = 0; k < datumlist.Count; k++)
