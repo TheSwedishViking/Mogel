@@ -19,7 +19,7 @@ namespace VäderUppgift
             string oscarUrl = @"C:\Users\oxlyt\Desktop\tempdata5-med fel.txt";
 
             //-\d{2}- extra för månad
-            Regex entireRegexPattern = new Regex(@"^(?<year>[2][0][1][6]|[2][0][1][7])-(?<month>[0-1][0-9]|1[1-2])-(?<day>[0-2][0-9]|3[0-1]) (?<hour>[0-1][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]),(?<location>[I][n][n][e]),(?<temp>[1-2][0-9]\.[0-9]),(?<rh>1[0-9]|[2-3][0-9]|[4-5][0-9])$|^(?<year>[2][0][1][6]|[2][0][1][7])-(?<month>[0-1][0-9]|1[1-2])-(?<day>[0-2][0-9]|3[0-1]) (?<hour>[0-1][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]),(?<location>[U][t][e]),(?<temp>([-2][0-9]\.[0-9])|[0-9]\.[0-9]|[1-3][0-9]\.[0-9]),(?<rh>2[0-9]|[1-9][0-9])$");
+            Regex entireRegexPattern = new Regex(@"^(?<year>[2][0][1][6]|[2][0][1][7])-(?<month>0[1-9]|1[0-2])-(?<day>[0-2][0-9]|3[0-1]) (?<hour>[0-1][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]),(?<location>[I][n][n][e]),(?<temp>[1-2][0-9]\.[0-9]),(?<rh>1[0-9]|[2-3][0-9]|[4-5][0-9])$|^(?<year>[2][0][1][6]|[2][0][1][7])-(?<month>[0-1][0-9]|1[1-2])-(?<day>[0-2][0-9]|3[0-1]) (?<hour>[0-1][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]),(?<location>[U][t][e]),(?<temp>([-2][0-9]\.[0-9])|[0-9]\.[0-9]|[1-3][0-9]\.[0-9]),(?<rh>2[0-9]|[1-9][0-9])$");
 
             string weatherData = File.ReadAllText(oscarUrl);
             List<string> weatherLines = weatherData.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -52,32 +52,62 @@ namespace VäderUppgift
             {
                 try
                 {
-                    if(Regex.IsMatch(weatline, entireRegexPattern.ToString()))
+                    //Passar det inte det exceptionellt långa formatet
+                    if (!Regex.IsMatch(weatline, entireRegexPattern.ToString()))
                     {
-
+                        Console.WriteLine($"Rad {weatline} passade inte in på formatet");
+                        Console.ReadKey();
+                        //Lägg inte till, gå vidare i loopen
+                        continue;
                     }
+
+                    //Standard datum sträng därifrån
                     if (Regex.IsMatch(weatline, regexDatum.ToString()))
                     {
                         var newDate = regexDatum.Match(weatline);
                         DateOnly onlyDate = DateOnly.Parse(newDate.Value);
-                        //Console.WriteLine("Hittade datum: " + newDate.Value);
-                        if(!dataDictionary.TryGetValue(onlyDate, out var testList))
+                        if (!dataDictionary.TryGetValue(onlyDate, out var testList))
                         {
                             testList = new List<EveryDataBracket>();
                             dataDictionary[onlyDate] = testList;
                         }
                         EveryDataBracket dataBracket = new EveryDataBracket();
 
-                        //Fukt
-                        if (Regex.IsMatch(weatline, regexFukt.ToString()))
+                        if (Regex.IsMatch(weatline, regexTid.ToString()))
                         {
-                            var humidity = regexFukt.Match(weatline);
-                            short humidityValue = short.Parse(humidity.ToString());
-                            dataBracket.AirHumidity = humidityValue;
+                            var time = regexTid.Match(weatline);
+                            TimeOnly regTime = TimeOnly.Parse(time.Value);
+                            dataBracket.Tid = regTime;
                         }
+                        if (Regex.IsMatch(weatline, regexPlats.ToString()))
+                        {
+                            var place = regexPlats.Match(weatline);
+                            bool isInsideBool = false;
+                            if (place.Value.ToString() == "Inne")
+                            {
+                                isInsideBool = true;
+                            }
+                            dataBracket.IsInside = isInsideBool;
+                        }
+                        if (Regex.IsMatch(weatline, regexTemp.ToString()))
+                        {
+                            var tempValue = regexTemp.Match(weatline);
+                            if (float.TryParse(tempValue.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float floatValue))
+                            {
+                                dataBracket.Temp = floatValue;
+                            }
 
-                        dataDictionary[onlyDate].Add(dataBracket);
+                            //Fukt
+                            if (Regex.IsMatch(weatline, regexFukt.ToString()))
+                            {
+                                var humidity = regexFukt.Match(weatline);
+                                short humidityValue = short.Parse(humidity.ToString());
+                                dataBracket.AirHumidity = humidityValue;
+                            }
 
+                            dataDictionary[onlyDate].Add(dataBracket);
+
+                        }
                     }
                 }
                 catch (Exception e)
@@ -85,13 +115,21 @@ namespace VäderUppgift
                     Console.WriteLine(e.ToString());
                 }
             }
+
+
             foreach(var day in dataDictionary.Keys)
             {
                 Console.WriteLine($"Dag {day} count {dataDictionary[day].Count} hade fuktigheter registerade av ");
-                foreach(var humidity  in dataDictionary[day])
+                foreach(var data  in dataDictionary[day])
                 {
-                    Console.WriteLine($"\tLuftfuktighet: {humidity.AirHumidity}");
+                    string placeString = data.IsInside ? "Inomhus" : "Utomhus";
+                    if (!data.IsInside)
+                    {
+                        Console.WriteLine($"\tPlats: {placeString} Tid: {data.Tid}  Temperatur: {data.Temp} Luftfuktighet: {data.AirHumidity}");
+                    }
+                  
                 }
+                Console.ReadKey();
             }
 
             }
