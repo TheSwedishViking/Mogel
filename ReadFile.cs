@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Globalization;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TempData_grupparbete
 {
@@ -13,7 +16,11 @@ namespace TempData_grupparbete
         public static string path = "../../../File/";
         public static void ReadAll()
         {
-            Regex regex = new Regex(@"^(?<year>[2][0][1][6]|[2][0][1][7])-(?<month>[0-1][0-9]|1[1-2])-(?<day>[0-2][0-9]|3[0-1]) (?<hour>[0-1][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]),(?<location>[I][n][n][e]),(?<temp>[1-2][0-9]\.[0-9]),(?<rh>1[0-9]|[2-3][0-9]|4[0-5])$|^(?<year>[2][0][1][6]|[2][0][1][7])-(?<month>[0-1][0-9]|1[1-2])-(?<day>[0-2][0-9]|3[0-1]) (?<hour>[0-1][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]),(?<location>[U][t][e]),(?<temp>([-2][0-9]\.[0-9])|[0-9]\.[0-9]|[1-3][0-9]\.[0-9]),(?<rh>2[0-9]|[3-9][0-9])$");
+            StringBuilder sb = new StringBuilder();
+            Stopwatch sw = Stopwatch.StartNew();
+            List<WeatherData> weatherData = new List<WeatherData>();
+            Regex inneTemp = new Regex(@"^(?<year>2016|2017)-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[1-2]\d|3[01]) (?<hour>[0-1]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d),(?<location>Inne),(?<temp>[1-3]\d.\d),(?<rh>[1-8]\d)$",RegexOptions.Compiled);
+            Regex uteTemp = new Regex(@"^(?<year>2016|2017)-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[1-2]\d|3[01]) (?<hour>[0-1]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d),(?<location>Ute),(?<temp>-?[0-3]?\d.\d),(?<rh>100|\d?\d)$",RegexOptions.Compiled);
             try
             {
                 using (StreamReader reader = new StreamReader(path + "tempdata.txt"))
@@ -22,26 +29,56 @@ namespace TempData_grupparbete
                     int rowCount = 0;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        Match match = regex.Match(line);
+                        Match match = Match.Empty;
+                        if (line.Contains("Inne"))
+                        {
+                            match = inneTemp.Match(line);
+                        }
+                        else if (line.Contains("Ute"))
+                        {
+                            match = (uteTemp.Match(line));
+                        }
                         if (match.Success)
                         {
+                            WeatherData data = new WeatherData
+                            {
+                                DateTime = new DateTime(
+                                int.Parse(match.Groups["year"].Value),
+                                int.Parse(match.Groups["month"].Value),
+                                int.Parse(match.Groups["day"].Value),
+                                int.Parse(match.Groups["hour"].Value),
+                                int.Parse(match.Groups["minute"].Value),
+                                int.Parse(match.Groups["second"].Value),
+                                int.Parse(match.Groups["second"].Value)),
+                                Location = match.Groups["location"].Value,
+                                Temp = double.Parse(match.Groups["temp"].Value,CultureInfo.InvariantCulture),
+                                Humidity = int.Parse(match.Groups["rh"].Value)
+                            };
                             string time = match.Groups["year"].Value + "-" + match.Groups["month"].Value + "-" + match.Groups["day"].Value + " " + match.Groups["hour"].Value + ":" + match.Groups["minute"].Value + ":" + match.Groups["second"].Value + "," + match.Groups["location"].Value + "," + match.Groups["temp"].Value + "," + match.Groups["rh"].Value;
-                            //if (match.Groups["location"].Value  == "Ute")
-                            Console.WriteLine(rowCount + " " + time);
+                            string fullSring = rowCount + " " + time;
+                            sb.AppendLine(fullSring);
+                            //Console.WriteLine(rowCount + " " + time);
                             rowCount++;
+                            weatherData.Add(data);
                         }
-                        else
-                        {
-                            Console.WriteLine(line + "<--------------");
-                            Console.ReadKey();
-                        }
+                        
+                        //else
+                        //{
+                        //    Console.WriteLine(rowCount + " " + line + "<--------------");
+                        //    Console.ReadKey();
+                        //}
                     }
+                    Console.WriteLine(sb.ToString());
+                    sw.Stop();
+                    Console.WriteLine(sw.ElapsedMilliseconds+ "ms " + rowCount + "rader");
+                    Console.ReadKey();
                 }
             }
             catch
             {
                 Console.WriteLine("Filen finns inte");
             }
+
         }
     }
 }
