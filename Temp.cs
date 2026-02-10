@@ -12,22 +12,17 @@ namespace VäderUppgift
 {
     internal class Temp
     {
+        public static string path = "../../../File/";
         public static void TempRun()
         {
             string url = @"B:\Downloads,Pictures,Videos\Downloads\tempdata5-med fel\tempdata5-med fel.txt";
             string oscarUrl = @"C:\Users\oxlyt\Desktop\tempdata5-med fel.txt";
 
-            //\\S+   längre strängar
-            //\d{4}-\d{2}-\d{2} datum
-            //\d{2}:\d{2}:\d{2} tid
-            //[A-Za-z] plats
-            //\d{1,2}\.\d{0,1}  temperatur
-            //[0-9]{1,2}$  luftfuktighet
-
-
             //-\d{2}- extra för månad
+            Regex entireRegexPattern = new Regex(@"^(?<year>[2][0][1][6]|[2][0][1][7])-(?<month>[0-1][0-9]|1[1-2])-(?<day>[0-2][0-9]|3[0-1]) (?<hour>[0-1][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]),(?<location>[I][n][n][e]),(?<temp>[1-2][0-9]\.[0-9]),(?<rh>1[0-9]|[2-3][0-9]|[4-5][0-9])$|^(?<year>[2][0][1][6]|[2][0][1][7])-(?<month>[0-1][0-9]|1[1-2])-(?<day>[0-2][0-9]|3[0-1]) (?<hour>[0-1][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]),(?<location>[U][t][e]),(?<temp>([-2][0-9]\.[0-9])|[0-9]\.[0-9]|[1-3][0-9]\.[0-9]),(?<rh>2[0-9]|[1-9][0-9])$");
 
-      
+            string weatherData = File.ReadAllText(oscarUrl);
+            List<string> weatherLines = weatherData.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             //Datum
             List<DateOnly> datumlist = new();
             Regex regexDatum = new Regex("\\d{4}-\\d{2}-\\d{2}");
@@ -48,11 +43,6 @@ namespace VäderUppgift
             List<short> luftfuktighetList = new();
             Regex regexFukt = new Regex("(?<=[0-9]{1,2}\\.[0-9]{1}.)([0-9]{1,2})");
 
-            string weatherData = File.ReadAllText(oscarUrl);
-
-            List<Regex> patterinList = new();
-            List<string> weatherLines = weatherData.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-
             Regex entireRowFormatDay = new Regex("(\\d{4}-\\d{2}-\\d{2}\\s\\d{1,2}:\\d{1,2}:\\d{1,2},\\D{1,4}[0-9]{1,2}.[0-9]{1,2},\\d[0-9]{1,2})");
             List<string> weatherOutside = new List<string>();
 
@@ -62,7 +52,10 @@ namespace VäderUppgift
             {
                 try
                 {
+                    if(Regex.IsMatch(weatline, entireRegexPattern.ToString()))
+                    {
 
+                    }
                     if (Regex.IsMatch(weatline, regexDatum.ToString()))
                     {
                         var newDate = regexDatum.Match(weatline);
@@ -101,153 +94,6 @@ namespace VäderUppgift
                 }
             }
 
-            patterinList.AddRange(regexDatum, regexTid , regexPlats, regexTemp , regexFukt);
-
-         
-            ////print
-            //foreach (var item in patterinList)
-            //{
-            //    Regex regex = new Regex(item.ToString());
-            //    MatchCollection matches = regex.Matches(htmlContent);
-
-            //    for (int i = 0; i < 100000; i++)
-            //    {
-            //        //Console.WriteLine(matches[i]);
-            //        try
-            //        {
-            //            if (regexDatum.IsMatch(matches[i].ToString()))
-            //            {
-            //                //Console.WriteLine(item.ToString());
-            //                if (!datumlist.Contains(DateOnly.Parse(matches[i].ToString())))
-            //                {
-            //                    datumlist.Add(DateOnly.Parse(matches[i].ToString()));
-            //                }
-            //                continue;
-            //            }        //DateMatch   
-            //            if (regexTid.IsMatch(matches[i].ToString()))
-            //            {
-            //                //Console.WriteLine(matches[i].ToString());
-            //                //fel format
-            //                if (matches[i].ToString().StartsWith("24"))
-            //                {
-            //                    //Console.WriteLine("XXXXXXXXXXXXXXXXXXXXXXX");
-
-            //                    //Console.WriteLine($"Old time value which should be wrong: {matches[i].ToString()}");
-
-            //                    var output = Regex.Replace(matches[i].ToString(), "^24", "00");
-
-            //                    //Console.WriteLine($"Converted value from old: {output}");
-            //                    //Console.ReadLine();
-            //                    tidList.Add(TimeOnly.Parse(output));
-
-
-            //                }
-            //                //rätt format
-            //                else
-            //                {
-            //                    tidList.Add(TimeOnly.Parse(matches[i].ToString()));
-            //                }
-
-            //                return;
-            //            }  //TimeMatch
-            //            if (regexPlats.IsMatch(matches[i].ToString()))
-            //            {
-            //                //Console.WriteLine(matches[i].ToString());
-
-            //                platsList.Add(matches[i].ToString());
-            //                return;
-            //            }//PlatsMatch
-            //            if (regexTemp.IsMatch(matches[i].Value))
-            //            {
-            //                //Console.WriteLine($"Input temp : {matches[i].Value}");
-            //                //Console.ReadLine();
-            //                string addedF = matches[i].Value.ToString() + "f";
-            //                //Console.WriteLine("Convert value = " + addedF + " " + addedF.ToString().ToString());
-            //                //Console.WriteLine();
-            //                float test = 24.5f;
-            //                //Console.WriteLine(matches[i].ToString());
-            //                if (float.TryParse(matches[i].ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float value))
-            //                {
-            //                    //Console.WriteLine("Matched format");
-            //                    //Console.ReadLine();
-
-            //                    //add to list
-            //                    tempList.Add(value);
-            //                }
-            //                else
-            //                {
-            //                    Console.WriteLine("Did not match format");
-            //                    Console.ReadLine();
-            //                }
-
-            //                continue;
-            //            }
-            //            //TempMatch
-            //            Console.WriteLine("FUKT DELEN!");
-            //            Console.ReadLine();
-            //            if (regexFukt.IsMatch(matches[i].Value))
-            //            {
-            //                Console.WriteLine(matches[i].ToString());
-            //                short fuktValue = short.Parse(matches[i].Value);
-            //                tempList.Add(fuktValue);
-            //                continue;
-            //            }//Fukt
-            //            Console.WriteLine();
-            //        }
-            //        catch(ArgumentOutOfRangeException ex)
-            //        {
-
-            //            Console.WriteLine($"Maybe out of range? {ex.Message} í: {i}");
-            //        }
-            //        catch(Exception e)
-            //        {
-            //            Console.WriteLine($"Excetoption :{e.Message}");
-            //        }
-                    
-            //        }
-                
-                   
-
-
-                //for(int k = 0; k < datumlist.Count; k++)
-                //{
-                //    Console.WriteLine(datumlist[k].ToString() + " " + tidList[k].ToString() + " " + platsList[k].ToString() + " " +
-                //        tidList[k].ToString() + " " + luftfuktighetList[k].ToString());
-                //    Console.ReadLine();
-                //}
-
-
-                //foreach (var date in datumlist)
-                //{
-                //    Console.WriteLine(item);
-                //}            //date writer
-                //foreach (var time in tidList)
-                //{
-                //    Console.WriteLine(item);
-                //}            //time writer
-
-                
-
-
-
             }
-      
-
-         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
-
     }
