@@ -14,7 +14,7 @@ namespace VäderUppgift
 
         //Temperatur som kan vara -39.9 - 39.9
         //Beror på inomhus eller utomhus
-        public  float Temp { get; set; }
+        public  double Temp { get; set; }
 
         //0-100 generellt, 10-80 inne
         public short AirHumidity { get; set; }
