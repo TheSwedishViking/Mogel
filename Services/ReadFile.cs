@@ -72,15 +72,28 @@ namespace TempData_grupparbete.Services
                             badData.Add((badDataRow,line));
                         }
                     }
-                    Console.WriteLine(sb.ToString());
                     sw.Stop();
-                    Console.WriteLine(sw.ElapsedMilliseconds+ "ms " + rowCount + " rader");
+                    Console.WriteLine("Sammanställning av data tog "+ sw + "ms");
+                    ConsoleKey key = Console.ReadKey(true).Key;
+                    Action action = key switch
+                    {
+                        ConsoleKey.D => () => CollectedDataDisplay.DisplayDailyTemp(weatherData),
+                        ConsoleKey.S => () => Search.SearchDate(weatherData),
+                        ConsoleKey.B => () => { Console.WriteLine("---Felaktig data---\n"); Console.WriteLine(sbBadData); },
+                        ConsoleKey.M => () => CollectedDataDisplay.DisplayDailyMonth(weatherData),
+                        _ => () =>{ Console.WriteLine("Felaktig inmantning"); Thread.Sleep(1000); }
+                    };
+                    action();
+                    Console.ReadKey();
+                    Console.WriteLine(sb);
+                    sw.Stop();
+                    Console.WriteLine(sw.ElapsedMilliseconds + "ms " + rowCount + " rader");
                     Console.WriteLine("---Felaktig data---");
                     Console.WriteLine();
                     Console.WriteLine($"{"Rad",-10} | Data");
                     Console.WriteLine(sbBadData);
                     Console.WriteLine(badDataCount);
-                    CollectedDataDisplay.DisplayDailyTemp(weatherData);
+                    
                     Search.SearchDate(weatherData);
                     Console.ReadKey();
                 }

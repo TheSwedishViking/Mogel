@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace TempData_grupparbete.Models
 {
-    internal class DailyTempStatistics
+    internal class TempStatistics
     {
         public DateTime Date { get; set; }
         public double Temp {  get; set; }
         public int Count { get; set; }
+        public  double Humidity { get; set; }
     }
 }

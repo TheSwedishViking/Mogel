@@ -18,8 +18,8 @@ namespace TempData_grupparbete.Services
             int day = 06;
              DateTime date = new DateTime(year, month, day);
             
-            List<DailyTempStatistics> inDoorTemp = await DataExtraction.AverageTempDay(data, "Inne");
-            List<DailyTempStatistics> outDoorTemp = await DataExtraction.AverageTempDay(data, "Ute");
+            List<TempStatistics> inDoorTemp = await DataExtraction.AverageTempDay(data, "Inne");
+            List<TempStatistics> outDoorTemp = await DataExtraction.AverageTempDay(data, "Ute");
             StringBuilder sb = new StringBuilder();
 
             var resultIn = inDoorTemp
@@ -29,8 +29,7 @@ namespace TempData_grupparbete.Services
 
             if (resultIn != null && resultOut != null)
             {
-                Console.WriteLine($"test");
-                sb.Append($"{resultIn.Date:yy-MM-dd} {resultIn.Temp.ToString("0.0")} | {resultOut.Temp.ToString("0.0")}");
+                sb.Append($"{resultIn.Date.ToString("yy-MM-dd")} | {resultIn.Temp.ToString("0.0")} | {resultOut.Temp.ToString("0.0")}");
             }
             else
             {
