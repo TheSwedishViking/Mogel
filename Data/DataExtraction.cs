@@ -15,17 +15,20 @@ namespace TempData_grupparbete.Data
     {
         public static async Task<List<DailyTempStatistics>> AverageTempDay(List<WeatherData> data, string location)
         {
+            
             return await Task.Run(() => data
                 .Where(d => d.Location == location)
                 .GroupBy(d => d.DateTime.Date)
                 .Select(group => new DailyTempStatistics
                 {
                     Date = group.Key,
-                    Temp = group.Average(d => d.Temp)
+                    Temp = group.Average(d => d.Temp),
+                    Count = group.Count()
                 })
                 .OrderBy(stats => stats.Date)
                 .ToList()
                 );
+            
         }
     }
 }

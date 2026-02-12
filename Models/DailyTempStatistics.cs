@@ -10,5 +10,6 @@ namespace TempData_grupparbete.Models
     {
         public DateTime Date { get; set; }
         public double Temp {  get; set; }
+        public int Count { get; set; }
     }
 }

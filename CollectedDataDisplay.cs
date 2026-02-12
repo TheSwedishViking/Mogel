@@ -19,9 +19,9 @@ namespace TempData_grupparbete
 
             foreach (var day in recentTemp)
             {
-                var recentMatch = outDoorTemp.FirstOrDefault(o => o.Date == day.Date);
+                var recentMatch = outDoorTemp.First(o => o.Date == day.Date);
                 string outMatch = recentMatch != null ? $"{recentMatch.Temp:F1}" : "N/A";
-                sb.AppendLine($"{day.Date:yy-MM-dd} {day.Temp:F1} | {outMatch}");
+                sb.AppendLine($"{day.Date:yy-MM-dd} | Mätpinkter {day.Count} {day.Temp:F1} | {recentMatch.Count} Mätpunkter {outMatch}");
             }
             Console.WriteLine(sb);
         }
