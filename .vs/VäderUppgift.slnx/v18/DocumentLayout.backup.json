@@ -1,22 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\",
+  "WorkspaceRootPath": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\temp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:temp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\m-gel\\comparedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:comparedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\m-gel\\genomsnittperdag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:genomsnittperdag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\m-gel\\everydatabracket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:everydatabracket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\m-gel\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\temporarydatasaver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:temporarydatasaver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\everydatabracket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:everydatabracket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\m-gel\\temp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:temp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -37,53 +41,70 @@
               "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
+              "Title": "GenomsnittPerDag.cs",
+              "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\GenomsnittPerDag.cs",
+              "RelativeDocumentMoniker": "GenomsnittPerDag.cs",
+              "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\GenomsnittPerDag.cs",
+              "RelativeToolTip": "GenomsnittPerDag.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-12T14:19:51.863Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CompareData.cs",
+              "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\CompareData.cs",
+              "RelativeDocumentMoniker": "CompareData.cs",
+              "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\CompareData.cs",
+              "RelativeToolTip": "CompareData.cs",
+              "ViewState": "AgIAAIIAAAAAAAAAAAAAAJQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-12T08:59:05.268Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "EveryDataBracket.cs",
-              "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\EveryDataBracket.cs",
+              "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\EveryDataBracket.cs",
               "RelativeDocumentMoniker": "EveryDataBracket.cs",
-              "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\EveryDataBracket.cs",
+              "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\EveryDataBracket.cs",
               "RelativeToolTip": "EveryDataBracket.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-05T14:01:55.291Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TemporaryDataSaver.cs",
-              "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\TemporaryDataSaver.cs",
-              "RelativeDocumentMoniker": "TemporaryDataSaver.cs",
-              "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\TemporaryDataSaver.cs",
-              "RelativeToolTip": "TemporaryDataSaver.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-05T13:44:37.66Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\Program.cs",
+              "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-05T13:15:13.737Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Temp.cs",
-              "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\Temp.cs",
+              "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\Temp.cs",
               "RelativeDocumentMoniker": "Temp.cs",
-              "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\Temp.cs",
+              "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\Temp.cs",
               "RelativeToolTip": "Temp.cs",
-              "ViewState": "AgIAAGsAAAAAAAAAAADwv3AAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACABAAAAAAAAAAAAAGsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-05T13:16:01.643Z",
               "EditorCaption": ""

@@ -5,10 +5,10 @@
         static void Main(string[] args)
         {
 
-          
-            Temp.TempRun();
 
+            //Temp.TempRun();
 
+            CompareData.Run();
 
 
 

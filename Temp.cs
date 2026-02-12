@@ -14,7 +14,6 @@ namespace VäderUppgift
             string url = @"B:\Downloads,Pictures,Videos\Downloads\fixedData.txt";
             string htmlContent = File.ReadAllText(url);
 
-            // 🔥 Separate clocks
             DateTime? previousDateTimeInne = null;
             DateTime? previousDateTimeUte = null;
             DateTime? currentDateTime = null;
@@ -37,7 +36,7 @@ namespace VäderUppgift
             Regex regexDatum = new Regex("\\d{4}-\\d{2}-\\d{2}");
             Regex regexTid = new Regex("\\d{2}:\\d{2}:\\d{2}");
             Regex regexPlats = new Regex("[A-Za-z]{3,4}");
-            Regex regexTemp = new Regex("\\d{1,2}\\.\\d{0,1}");
+            Regex regexTemp = new Regex("-?\\d{1,2}\\.\\d{0,1}");
             Regex regexFukt = new Regex(@"(?<=,)\d{1,2}$");
 
             float? compareValueInside = null;
@@ -106,7 +105,6 @@ namespace VäderUppgift
                         {
                             parsedTemp = tempValue;
 
-                            // 🔥 Select correct clock
                             if (weatherLines[i].Contains("Ute"))
                             {
                                 if (tempDateHolderOutside.HasValue &&
@@ -278,32 +276,27 @@ namespace VäderUppgift
 
             Console.WriteLine("REMOVED COUNT " + RemoveCount);
 
-                File.WriteAllLines("cleanedDataWithId.txt",
+                File.WriteAllLines("cleanedDataWithIdAndSeperator.txt",
                 Enumerable.Range(0, datumlist.Count).Select(i =>
-                $"id{i} {datumlist[i]} {tidList[i]}," +
-                $"{platsList[i]}," +
-                $"{tempList[i].ToString(CultureInfo.InvariantCulture)}," +
+                $"{i};{datumlist[i]};{tidList[i]:HH:mm:ss};" +
+                $"{platsList[i]};" +
+                $"{tempList[i].ToString(CultureInfo.InvariantCulture)};" +
                 $"{luftfuktighetList[i]}"));
 
             File.WriteAllLines("datum.txt",
-                Enumerable.Range(0, datumlist.Count)
-                .Select(i => $"id{i} {datumlist[i]:yyyy-MM-dd}"));
+            datumlist.Select(d => d.ToString("yyyy-MM-dd")));
 
             File.WriteAllLines("tid.txt",
-                Enumerable.Range(0, tidList.Count)
-                .Select(i => $"id{i} {tidList[i]:HH:mm:ss}"));
+                tidList.Select(t => t.ToString("HH:mm:ss")));
 
             File.WriteAllLines("plats.txt",
-                Enumerable.Range(0, platsList.Count)
-                .Select(i => $"id{i} {platsList[i]}"));
+                platsList);
 
             File.WriteAllLines("temp.txt",
-                Enumerable.Range(0, tempList.Count)
-                .Select(i => $"id{i} {tempList[i].ToString(CultureInfo.InvariantCulture)}"));
+                tempList.Select(t => t.ToString(CultureInfo.InvariantCulture)));
 
             File.WriteAllLines("fukt.txt",
-                Enumerable.Range(0, luftfuktighetList.Count)
-                .Select(i => $"id{i} {luftfuktighetList[i]}"));
+                luftfuktighetList.Select(f => f.ToString()));
 
 
 

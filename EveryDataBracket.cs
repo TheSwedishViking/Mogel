@@ -15,7 +15,10 @@ namespace VäderUppgift
 
         public  float Temp { get; set; }
 
+
         public short AirHumidity { get; set; }
 
+
     }
+
 }
