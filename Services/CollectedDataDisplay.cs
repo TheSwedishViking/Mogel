@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TempData_grupparbete.Data;
 using TempData_grupparbete.Models;
 
-namespace TempData_grupparbete
+namespace TempData_grupparbete.Services
 {
     internal class CollectedDataDisplay
     {

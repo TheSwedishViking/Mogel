@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Runtime.Serialization;
 using TempData_grupparbete.Models;
+using TempData_grupparbete.Services;
 
 
-namespace TempData_grupparbete
+namespace TempData_grupparbete.Services
 {
     internal class ReadFile
     {
@@ -80,6 +81,7 @@ namespace TempData_grupparbete
                     Console.WriteLine(sbBadData);
                     Console.WriteLine(badDataCount);
                     CollectedDataDisplay.DisplayDailyTemp(weatherData);
+                    Search.SearchDate(weatherData);
                     Console.ReadKey();
                 }
             }

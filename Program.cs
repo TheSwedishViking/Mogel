@@ -1,4 +1,6 @@
-﻿namespace TempData_grupparbete
+﻿using TempData_grupparbete.Services;
+
+namespace TempData_grupparbete
 {
     internal class Program
     {
