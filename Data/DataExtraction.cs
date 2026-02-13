@@ -13,10 +13,10 @@ namespace TempData_grupparbete.Data
 {
     internal class DataExtraction
     {
-        public static async Task<List<TempStatistics>> AverageTempDay(List<WeatherData> data, string location)
+        public static List<TempStatistics> AverageTempDay(List<WeatherData> data, string location)
         {
-            
-            return await Task.Run(() => data
+
+            return data
                 .Where(d => d.Location == location)
                 .GroupBy(d => d.DateTime.Date)
                 .Select(group => new TempStatistics
@@ -27,26 +27,26 @@ namespace TempData_grupparbete.Data
                     Humidity = group.Average(h => h.Humidity)
                 })
                 .OrderBy(stats => stats.Date)
-                .ToList()
-                );
+                .ToList();
+                
             
         }
-        public static async Task<List<TempStatistics>> AverageTempMonth(List<WeatherData> data, string location)
+        public static List<TempStatistics> AverageTempMonth(List<WeatherData> data, string location)
         {
 
-            return await Task.Run(() => data
+            return data
                 .Where(d => d.Location == location)
-                .GroupBy(d => new { d.DateTime.Year, d.DateTime.Month})
+                .GroupBy(d => new { d.DateTime.Year, d.DateTime.Month })
                 .Select(group => new TempStatistics
                 {
                     Date = new DateTime(group.Key.Year, group.Key.Month, 1),
                     Temp = group.Average(d => d.Temp),
                     Count = group.Count(),
-                    Humidity = group.Average( h => h.Humidity)
+                    Humidity = group.Average(h => h.Humidity)
                 })
                 .OrderBy(stats => stats.Date)
-                .ToList()
-                );
+                .ToList();
+                
 
         }
     }

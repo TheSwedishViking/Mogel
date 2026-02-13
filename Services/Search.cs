@@ -12,7 +12,7 @@ namespace TempData_grupparbete.Services
 {
     internal class Search
     {
-        public static async Task SearchInput(List<WeatherData> data)
+        public static void SearchInput(List<WeatherData> data)
         {
                 int year;
                 int month;
@@ -29,11 +29,11 @@ namespace TempData_grupparbete.Services
                         {
                         if (day == 0)
                         {
-                            await SearchMonth(data, year, month);
+                            SearchMonth(data, year, month);
                         }
                         else
                         {
-                            await SearchDate(data, year, month, day);
+                            SearchDate(data, year, month, day);
                         }
                     }
                     else
@@ -58,17 +58,17 @@ namespace TempData_grupparbete.Services
                 
             
         }
-        public static async Task SearchDate(List<WeatherData> data, int year, int month, int day)
+        public static void SearchDate(List<WeatherData> data, int year, int month, int day)
         {
 
             if (!DateTime.TryParse($"{year}-{month}-{day}", out DateTime searchDate))
             {
                 Console.WriteLine("Ogiltigt datumformat.");
-                return;
+                
             }
 
-            List<TempStatistics> inDoorTemp = await DataExtraction.AverageTempDay(data, "Inne");
-            List<TempStatistics> outDoorTemp = await DataExtraction.AverageTempDay(data, "Ute");
+            List<TempStatistics> inDoorTemp = DataExtraction.AverageTempDay(data, "Inne");
+            List<TempStatistics> outDoorTemp = DataExtraction.AverageTempDay(data, "Ute");
             StringBuilder sb = new StringBuilder();
 
             var resultIn = inDoorTemp
@@ -86,14 +86,14 @@ namespace TempData_grupparbete.Services
             }
                 Console.WriteLine(sb);
                 Console.ReadLine();
-            return;        
+                 
         }
         public static async Task SearchMonth(List<WeatherData> data, int year, int month)
         {
             DateTime date = new DateTime(year, month, 00);
 
-            List<TempStatistics> inDoorTemp = await DataExtraction.AverageTempDay(data, "Inne");
-            List<TempStatistics> outDoorTemp = await DataExtraction.AverageTempDay(data, "Ute");
+            List<TempStatistics> inDoorTemp = DataExtraction.AverageTempDay(data, "Inne");
+            List<TempStatistics> outDoorTemp = DataExtraction.AverageTempDay(data, "Ute");
             StringBuilder sb = new StringBuilder();
 
             var resultIn = inDoorTemp

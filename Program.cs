@@ -4,10 +4,10 @@ namespace TempData_grupparbete
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             ReadFile.ReadAll();
-            UI.StartMenu();
+            await UI.StartMenu();
         }
     }
 }
