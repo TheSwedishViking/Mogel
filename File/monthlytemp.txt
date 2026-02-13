@@ -1,4 +1,4 @@
-Datum    | Mätpknt. | InneTemp | RH   | Mätpknt. | UteTemp | RH%  | Mögel%
+Datum | Mätpknt. | InneTemp | RH   | Mögel% | Mätpknt. | UteTemp  | RH%  | Mögel%
 
 16-05-01 | 587      | 25,2     | 37,6 | 479      | 25,3    | 32,4 | 0
 16-06-01 | 21356    | 24,7     | 28,8 | 15341    | 15,8    | 53,2 | 0
