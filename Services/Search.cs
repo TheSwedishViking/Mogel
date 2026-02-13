@@ -53,10 +53,6 @@ namespace TempData_grupparbete.Services
                     Console.WriteLine("Felaktig inmatning");
                     return;
                 }
-                
-
-                
-            
         }
         public static void SearchDate(List<WeatherData> data, int year, int month, int day)
         {
@@ -88,18 +84,22 @@ namespace TempData_grupparbete.Services
                 Console.ReadLine();
                  
         }
-        public static async Task SearchMonth(List<WeatherData> data, int year, int month)
+        public static void SearchMonth(List<WeatherData> data, int year, int month)
         {
-            DateTime date = new DateTime(year, month, 00);
+            if (!DateTime.TryParse($"{year}-{month}-{01}", out DateTime searchDate))
+            {
+                Console.WriteLine("Ogiltigt datumformat.");
+
+            }
 
             List<TempStatistics> inDoorTemp = DataExtraction.AverageTempDay(data, "Inne");
             List<TempStatistics> outDoorTemp = DataExtraction.AverageTempDay(data, "Ute");
             StringBuilder sb = new StringBuilder();
 
             var resultIn = inDoorTemp
-                .FirstOrDefault(t => t.Date.Date == date.Date);
+                .FirstOrDefault(t => t.Date.Date.Month == searchDate.Date.Month);
             var resultOut = outDoorTemp
-                .FirstOrDefault(t => t.Date.Date == date.Date);
+                .FirstOrDefault(t => t.Date.Date.Month == searchDate.Date.Month);
 
             if (resultIn != null && resultOut != null)
             {

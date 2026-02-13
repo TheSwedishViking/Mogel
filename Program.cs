@@ -6,8 +6,10 @@ namespace TempData_grupparbete
     {
         static async Task Main(string[] args)
         {
+            await Writer.Delete("baddata.txt");
             ReadFile.ReadAll();
             await UI.StartMenu();
+
         }
     }
 }

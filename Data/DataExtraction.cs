@@ -42,7 +42,7 @@ namespace TempData_grupparbete.Data
                     Date = new DateTime(group.Key.Year, group.Key.Month, 1),
                     Temp = group.Average(d => d.Temp),
                     Count = group.Count(),
-                    Humidity = group.Average(h => h.Humidity)
+                    Humidity = group.Average(h => h.Humidity),
                 })
                 .OrderBy(stats => stats.Date)
                 .ToList();

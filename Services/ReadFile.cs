@@ -15,10 +15,10 @@ namespace TempData_grupparbete.Services
 {
     internal class ReadFile
     {
-        
+        public static int rowCount = 0;
         public static string path = "../../../File/";
         public static List<WeatherData> weatherData = new List<WeatherData>();
-        public static StringBuilder sbBadData = new StringBuilder();
+        //public static StringBuilder sbBadData = new StringBuilder();
         public static Stopwatch sw = new Stopwatch();
         public static void ReadAll()
         {
@@ -26,19 +26,19 @@ namespace TempData_grupparbete.Services
            
             
             
-            List<(int, string)> badData = new List<(int, string)>();
+            //List<(int, string)> badData = new List<(int, string)>();
             Regex inneTemp = new Regex(@"^(?<year>201[6-7])-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[1-2]\d|3[01]) (?<hour>[0-1]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d),(?<location>Inne),(?<temp>[1-3]\d.\d),(?<rh>[1-8]\d)$",RegexOptions.Compiled);
             Regex uteTemp = new Regex(@"^(?<year>201[6-7])-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[1-2]\d|3[01]) (?<hour>[0-1]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d),(?<location>Ute),(?<temp>-?[0-3]?\d.\d),(?<rh>100|\d?\d)$",RegexOptions.Compiled);
-            int badDataCount = 0;
-            int badDataRow = 0;
-            string fullBadData;
+            //int badDataCount = 0;
+            //int badDataRow = 0;
+            //string fullBadData;
             sw.Start();
             try
             {
                 using (StreamReader reader = new StreamReader(path + "tempdata.txt"))
                 {
                     string line = reader.ReadLine();
-                    int rowCount = 0;
+                    //int rowCount = 0;
                     while ((line = reader.ReadLine()) != null)
                     {
                         if (string.IsNullOrEmpty(line)) continue;
@@ -69,11 +69,12 @@ namespace TempData_grupparbete.Services
                         }
                         else
                         {
-                            badDataCount++;
-                            badDataRow = rowCount + badDataCount;
-                            fullBadData = $"{badDataRow,-10} | {line}";
-                            sbBadData.AppendLine(fullBadData);
-                            badData.Add((badDataRow,line));
+                            CollectedDataDisplay.BadData(line);
+                            //badDataCount++;
+                            //badDataRow = rowCount + badDataCount;
+                            //fullBadData = $"{badDataRow,-10} | {line}";
+                            //sbBadData.AppendLine(fullBadData);
+                            //badData.Add((badDataRow,line));
                         }
                     }
                     sw.Stop();
