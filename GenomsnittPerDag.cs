@@ -11,7 +11,7 @@ namespace VäderUppgift
         
             public DateOnly Datum { get; set; }
             public double AverageTemp { get; set; }
-        
+            public Double? Fukt {  get; set; }
 
     }
 }

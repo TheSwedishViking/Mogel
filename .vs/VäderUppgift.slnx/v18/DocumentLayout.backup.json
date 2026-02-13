@@ -15,12 +15,12 @@
       "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:everydatabracket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\m-gel\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\m-gel\\temp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:temp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|c:\\users\\robin\\documents\\systemutvecklingmapp\\coolapp2\\februari-2026\\v\u00E4deruppgift\\m-gel\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9EEC732D-0721-D699-F276-1D947DF632B0}|V\u00E4derUppgift.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -52,7 +52,7 @@
               "RelativeDocumentMoniker": "GenomsnittPerDag.cs",
               "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\GenomsnittPerDag.cs",
               "RelativeToolTip": "GenomsnittPerDag.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAwAcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-12T14:19:51.863Z",
               "EditorCaption": ""
@@ -65,7 +65,7 @@
               "RelativeDocumentMoniker": "CompareData.cs",
               "ToolTip": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\CompareData.cs",
               "RelativeToolTip": "CompareData.cs",
-              "ViewState": "AgIAAIIAAAAAAAAAAAAAAJQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAAAJoAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-12T08:59:05.268Z",
               "EditorCaption": ""
@@ -85,7 +85,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -98,7 +98,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "Temp.cs",
               "DocumentMoniker": "C:\\Users\\robin\\Documents\\SystemutvecklingMapp\\coolapp2\\Februari-2026\\V\u00E4derUppgift\\M-gel\\Temp.cs",
               "RelativeDocumentMoniker": "Temp.cs",

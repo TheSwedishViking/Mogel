@@ -32,7 +32,8 @@ namespace VäderUppgift
 
             bool inputIsValid = false;
             string isInside = "";
-
+            double avrageFukt = 0;
+            var minMaxFukt = 0;
 
 
 
@@ -60,6 +61,16 @@ namespace VäderUppgift
                     continue;
                 }
                 
+
+
+
+
+
+
+
+
+
+
                     foreach (var item in CorrectDate)
                     {
                         Console.WriteLine($"Datum: {item.Datum} Tid: {item.Tid} Inne/ute: " +
@@ -70,6 +81,8 @@ namespace VäderUppgift
                 Console.WriteLine("Vill du se högsta temperaturen: H? Eller lägsta: L , eller Genomsnitt: G  ");
                 Console.WriteLine("Vill du se högsta Inom/utomhus temperaturen: Q? Eller lägsta: W , eller Genomsnitt: E  ");
                 Console.WriteLine("Sök mellan tidsspann = T");
+                Console.WriteLine("Metreologiska ögonblic! (M)");
+
 
 
                 switch (Console.ReadLine().ToUpper())
@@ -86,7 +99,9 @@ namespace VäderUppgift
                         break;//Lägsta
                     case "G":
                         var avrageTemp = CorrectDate.Average(t => t.Temp);
-                        Console.WriteLine(avrageTemp.ToString());
+                        avrageFukt = CorrectDate.Average(t => t.AirHumidity);
+
+                        Console.WriteLine(avrageTemp.ToString() + " grader , samt : " + avrageFukt.ToString() + " % fukt");
 
                         break;//Genomsnitt
                     case "T":
@@ -99,7 +114,8 @@ namespace VäderUppgift
                             Console.WriteLine("Fel datumformat.");
                             return;
                         }
-                        Console.WriteLine("All data? ( A ),     All uniqe day data? ( G),   Utomhusdata? ( U ) ,  Inomhusdata?  ( I )   ");
+                        Console.WriteLine("All data? ( A ),     All uniqe day data? InsideOutside( G )");
+                        Console.WriteLine("Utomhusdata (U) , Inomhusdata ? (I)");
                         switch (Console.ReadLine().ToUpper())
                         {
                             case "A":
@@ -107,7 +123,7 @@ namespace VäderUppgift
 
                                 foreach (var item in betweenDates)
                                 {
-                                    Console.WriteLine(item.Datum + "  temp = " + item.Temp);
+                                    Console.WriteLine(item.Datum + "  temp = " + item.Temp + " fukt :" + item.AirHumidity + "% ");
                                     tempCompareeDateList.Add(item);
                                 }
                                 break;
@@ -116,7 +132,7 @@ namespace VäderUppgift
                                 betweenDates = dataLines.Where(d => !d.IsInside && d.Datum >= searchDate && d.Datum <= fromXToY).ToList();
                                 foreach (var item in betweenDates)
                                 {
-                                    Console.WriteLine(item.Datum + "  temp = " + item.Temp);
+                                    Console.WriteLine(item.Datum + "  temp = " + item.Temp + " fukt :" + item.AirHumidity + "% ");
                                     tempCompareeDateList.Add(item);
                                 }
                                 break;
@@ -124,7 +140,7 @@ namespace VäderUppgift
                                 betweenDates = dataLines.Where(d => d.IsInside && d.Datum >= searchDate && d.Datum <= fromXToY).ToList();
                                 foreach (var item in betweenDates)
                                 {
-                                    Console.WriteLine(item.Datum + "  temp = " + item.Temp);
+                                    Console.WriteLine(item.Datum + "  temp = " + item.Temp + " fukt :" + item.AirHumidity + "% ");
                                     tempCompareeDateList.Add(item);
                                 }
                                 break;
@@ -156,41 +172,55 @@ namespace VäderUppgift
                                 var averagePerDay = datesToCompare
                                     .GroupBy(d => d.Datum).Select(g => new GenomsnittPerDag
                                     {
-                                          Datum = g.Key,AverageTemp = g.Average(x => x.Temp)
+                                          Datum = g.Key,AverageTemp = g.Average(x => x.Temp), Fukt = g.Average(x => x.AirHumidity),
                                     }).ToList();
 
+                                Console.WriteLine("Vill du sortera efter LuftFuktighet? ( L )   Eller Temp ( T )");
+                                string orderTemp = Console.ReadLine().ToLower();
 
-                                foreach (var item in averagePerDay.OrderBy(t => t.AverageTemp))
+                                if (orderTemp == "t")
                                 {
-                                    Console.WriteLine(item.Datum + "  genomsnitt temp = " + item.AverageTemp);
-                                    dailyAVG.Add(item);
+                                    foreach (var item in averagePerDay.OrderBy(t => t.AverageTemp))
+                                    {
+                                        Console.WriteLine(item.Datum + "  genomsnitt temp = " + item.AverageTemp + " fukt :" + item.Fukt + "% ");
+                                        dailyAVG.Add(item);
+                                    }
                                 }
-
+                                else
+                                {
+                                    foreach (var item in averagePerDay.OrderBy(t => t.Fukt))
+                                    {
+                                        Console.WriteLine(item.Datum + "  genomsnitt temp = " + item.AverageTemp + " fukt :" + item.Fukt + "% ");
+                                        dailyAVG.Add(item);
+                                    }
+                                }
                                 break;
                         }
                             
 
-                        Console.WriteLine("Vill du se högsta temperaturen: H? Eller lägsta: L , eller Genomsnitt: G   , sorterat efter temp X");
+                        Console.WriteLine("Vill du se högsta temperaturen: H? Eller lägsta: L , eller Genomsnitt: G   , sorterat efter temp/fukt X");
 
                         switch (Console.ReadLine().ToUpper())
                         {
                             case "H":
-
+                                minMaxFukt = tempCompareeDateList.Max(t => t.AirHumidity);
                                 maxTemp = tempCompareeDateList.Max(t => t.Temp);
-                                Console.WriteLine(maxTemp.ToString());
+                                Console.WriteLine(maxTemp.ToString() + " Grader,  " + minMaxFukt + "% fukt");
 
 
-                                break;
+                                break; //Högsta temp Datumsökning
                             case "L":
                                 lowestTemp = tempCompareeDateList.Min(t => t.Temp);
-                                Console.WriteLine(lowestTemp.ToString());
+                                minMaxFukt = tempCompareeDateList.Min(t => t.AirHumidity);
+                                Console.WriteLine(lowestTemp.ToString() + " Grader,  " + minMaxFukt + "% fukt");
 
-                                break;
+                                break;//Lägsta temp Datumsökning
                             case "G":
                                 avrageTemp = tempCompareeDateList.Average(t => t.Temp);
-                                Console.WriteLine(avrageTemp.ToString());
+                                avrageFukt = tempCompareeDateList.Average(t => t.AirHumidity);
+                                Console.WriteLine(avrageTemp.ToString() +  " Grader,  " + avrageFukt + "% fukt");
 
-                                break;
+                                break;//Genomsnitt  Datumsökning
                             case "X":
 
 
@@ -201,7 +231,7 @@ namespace VäderUppgift
                                     Console.WriteLine(item.Datum + " + temp: "+item.AverageTemp);
                                 }
 
-                                break;
+                                break;//Sorterat efter temp/fukt Datumsökning
 
                         }
                         break; //Date -> Date   /WITH InsideOutside
@@ -221,7 +251,8 @@ namespace VäderUppgift
 
                         }
                         maxTemp = CorrectDateInside.Where(d => d.IsInside == insideStatus).Max(t => t.Temp);
-                        Console.WriteLine(maxTemp.ToString() + " Är högsta temperaturen " + insideOutside);
+                        minMaxFukt = CorrectDateInside.Where(d => d.IsInside == insideStatus).Max(t => t.AirHumidity);
+                        Console.WriteLine(maxTemp.ToString() + " Är högsta temperaturen " + insideOutside + " med fukt " + minMaxFukt + "%");
                         break;//InomUtom Högsta
                     case "W":
                         Console.WriteLine("Inside = inne     , Ute = ute");
@@ -236,8 +267,9 @@ namespace VäderUppgift
                             insideStatus = false;
 
                         }
-                        lowestTemp = CorrectDateInside.Where(d => d.IsInside == insideStatus).Max(t => t.Temp);
-                        Console.WriteLine(lowestTemp.ToString() + " Är lägsta temperaturen " + insideOutside);
+                        minMaxFukt = CorrectDateInside.Where(d => d.IsInside == insideStatus).Min(t => t.AirHumidity);
+                        lowestTemp = CorrectDateInside.Where(d => d.IsInside == insideStatus).Min(t => t.Temp);
+                        Console.WriteLine(lowestTemp.ToString() + " Är lägsta temperaturen " + insideOutside + " med fukt " + minMaxFukt + "%");
                         break;////InomUtom Lägsta
                     case "E":
                         Console.WriteLine("Inside = inne     , Ute = ute");
@@ -252,9 +284,13 @@ namespace VäderUppgift
                             insideStatus = false;
 
                         }
+                        avrageFukt = CorrectDateInside.Where(d => d.IsInside == insideStatus).Average(t => t.AirHumidity);
                         avrageTemp = CorrectDateInside.Where(d => d.IsInside == insideStatus).Average(t => t.Temp);
-                        Console.WriteLine(avrageTemp.ToString() + " Är den genomsnittliga temperaturen " + insideOutside);
+                        Console.WriteLine(avrageTemp.ToString() + " Är den genomsnittliga temperaturen " + insideOutside + " med fukt " + avrageFukt + "%");
                         break;//InomUtom Genomsnitt
+                    case "M":
+                        Metreologi();
+                        break;
                     default:
                         Console.WriteLine("Ogiltigt val.");
                         break;
@@ -275,7 +311,80 @@ namespace VäderUppgift
 
         }
 
+        public static void Metreologi()
+        {
+            Console.WriteLine("Meteorologisk Höst   H");
+            Console.WriteLine("Meteorologisk Vinter  V");
+            char key = char.ToLower(Console.ReadKey(true).KeyChar);
+            switch (key)
+            {
+                case 'h':
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    break;
+                case 'v':
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    break;
+            }
+
+
+
+
+
+        }
 
 
 
