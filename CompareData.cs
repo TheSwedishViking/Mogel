@@ -171,23 +171,55 @@ namespace VäderUppgift
                                 Console.WriteLine("Vill du sortera efter LuftFuktighet? ( L )   Eller Temp ( T )");
                                 string orderTemp = Console.ReadLine().ToLower();
 
-                                if (orderTemp == "t")
+                                if (orderTemp == "t")    //temp
                                 {
-                                    foreach (var item in averagePerDay.OrderBy(t => t.AverageTemp))
+                                    Console.WriteLine("Vill du visa min ? ( M)     Max = ( B )");
+                                    char minMax = char.ToLower(Console.ReadKey().KeyChar);
+                                    if (minMax == 'm')
                                     {
-                                        Console.WriteLine(item.Datum + "  genomsnitt temp = " + item.AverageTemp + " fukt :" + item.Fukt + "% ");
-                                        dailyAVG.Add(item);
+                                        foreach (var item in averagePerDay.OrderByDescending(t => t.AverageTemp))
+                                        {
+                                            Console.WriteLine(item.Datum + "  genomsnitt temp = " + item.AverageTemp + " fukt :" + item.Fukt + "% ");
+                                            dailyAVG.Add(item);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in averagePerDay.OrderBy(t => t.AverageTemp))
+                                        {
+                                            Console.WriteLine(item.Datum + "  genomsnitt temp = " + item.AverageTemp + " fukt :" + item.Fukt + "% ");
+                                            dailyAVG.Add(item);
+                                        }
+                                    }
+
+
+                                }
+                                else   //fukt
+                                {
+                                    Console.WriteLine("Vill du visa min ? ( M)     Max = ( B )");
+                                    char minMax = char.ToLower(Console.ReadKey().KeyChar);
+                                    if (minMax == 'm')
+                                    {
+                                        foreach (var item in averagePerDay.OrderByDescending(t => t.Fukt))
+                                        {
+                                            Console.WriteLine(item.Datum + "  genomsnitt temp = " + item.AverageTemp + " fukt :" + item.Fukt + "% ");
+                                            dailyAVG.Add(item);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in averagePerDay.OrderBy(t => t.Fukt))
+                                        {
+                                            Console.WriteLine(item.Datum + "  genomsnitt temp = " + item.AverageTemp + " fukt :" + item.Fukt + "% ");
+                                            dailyAVG.Add(item);
+                                        }
                                     }
                                 }
-                                else
-                                {
-                                    foreach (var item in averagePerDay.OrderBy(t => t.Fukt))
-                                    {
-                                        Console.WriteLine(item.Datum + "  genomsnitt temp = " + item.AverageTemp + " fukt :" + item.Fukt + "% ");
-                                        dailyAVG.Add(item);
-                                    }
-                                }
+                                Console.ReadKey();
+                                Console.Clear();
+                                Run();
                                 break;
+
                         }
 
 
