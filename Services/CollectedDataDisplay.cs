@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -19,8 +20,129 @@ namespace TempData_grupparbete.Services
         public static int badDataCount = 0;
         public static int badDataRow = 0;
         public static string fullBadData;
-        public static string header = $"{"Datum",-8} | {"Mätpknt.",-8} | {"InneTemp",-7} | {"RH",-4} | {"Mätpknt.",-8} | {"UteTemp",-6} | {"RH%",-5}| Mögel%";
+        public static string indoorHeader = $"{"Datum",-8} | {"Mätpknt.",-8} | {"InneTemp",-7} | {"RH",-4} | Mögel% | {"Mätpknt.",-8} | {"UteTemp",-8} | {"RH%",-5}| Mögel%";
+        public static string outdoorHeader = $"{"Datum",-8} | {"Mätpknt.",-8} | {"UteTemp",-8} | {"RH%",-5}| Mögel% | {"Mätpknt.",-8} | {"InneTemp",-6} | {"RH",-5}| Mögel%";
 
+        public static string indoorHeaderMonth = $"{"Datum",-5} | {"Mätpknt.",-8} | {"InneTemp",-7} | {"RH",-4} | Mögel% | {"Mätpknt.",-8} | {"UteTemp",-8} | {"RH%",-5}| Mögel%";
+        public static string outdoorHeaderMonth = $"{"Datum",-5} | {"Mätpknt.",-8} | {"UteTemp",-8} | {"RH%",-5}| Mögel% | {"Mätpknt.",-8} | {"InneTemp",-6} | {"RH",-5}| Mögel%";
+        public static string header;
+        public static bool YesOrNo(string field)
+        {
+            while (true)
+            {
+                Console.WriteLine(field + " J/N");
+                string? input = Console.ReadLine()?.ToUpper();
+                if (input.ToLower() == "j")
+                {
+                    return true;
+                }
+                else if (input.ToLower() =="n")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Felaktig inmatning");
+                }
+            }
+        }
+        public static async Task DisplayDailyTempWithSorting(List<WeatherData> data)
+        {
+            List<TempStatistics> inDoorTemp = DataExtraction.AverageTempDay(data, "Inne");
+            List<TempStatistics> outDoorTemp = DataExtraction.AverageTempDay(data, "Ute");
+
+            while (true)
+            {
+                bool IsOutsideDataReqestested = YesOrNo("Sortera enligt utomhus?");
+                var recentTemp = outDoorTemp;
+                if (IsOutsideDataReqestested)
+                {
+                    header = outdoorHeader;
+                     recentTemp = outDoorTemp;
+                }
+                else if (!IsOutsideDataReqestested)
+                {
+                    header = indoorHeader;
+                     recentTemp = inDoorTemp;
+                }
+                Console.WriteLine($"[M] för att sortera enligt mögel\n[T] för att sortera enligt temperatur\n[H] för luftfuktighet\n[D] för datum");
+                ConsoleKey key = Console.ReadKey(true).Key;
+
+
+                switch (key)
+                {
+                    case ConsoleKey.M:
+                        bool answer = YesOrNo("Stigande?");
+                        if (answer)
+                        {
+                            recentTemp = recentTemp.OrderBy(d => d.Mold).ToList();
+                        }
+                        else if (!answer)
+                        {
+                           recentTemp = recentTemp.OrderByDescending(d => d.Mold).ToList();
+                        }
+                        break;
+
+                    case ConsoleKey.T:
+                        bool temp = YesOrNo("Stigande temperatur?");
+                        if (temp)
+                        {
+                            recentTemp = recentTemp.OrderBy(d => d.Temp).ToList();
+                        }
+                        else
+                        {
+                            recentTemp = recentTemp.OrderByDescending(d => d.Temp).ToList();
+                        }
+                            break;
+                    case ConsoleKey.H:
+                        bool humidity = YesOrNo("Stigande luftfuktighet?");
+                        if (humidity)
+                        {
+                            recentTemp = recentTemp.OrderBy(d => d.Humidity).ToList();
+                        }
+                        else
+                        {
+                            recentTemp = recentTemp.OrderByDescending(d => d.Humidity).ToList();
+                        }
+                            break;
+                    case ConsoleKey.D:
+                        bool date = YesOrNo("Senaste datum?");
+                        if (date)
+                        {
+                            recentTemp = recentTemp.OrderBy(d=>d.Date).ToList();
+                        }
+                        else
+                        {
+                            recentTemp = recentTemp.OrderByDescending(d => d.Date).ToList();
+                        }
+                            
+                        break;
+                }
+                StringBuilder sbd = new StringBuilder();
+
+         
+                sbd.AppendLine(header);
+                await Writer.Delete("dailytemp.txt");
+                await Writer.WriteRow("dailytemp.txt", header);
+                await Writer.WriteRow("dailytemp.txt", "");
+                foreach (var day in recentTemp)
+                {
+                    var recentMatch = inDoorTemp.FirstOrDefault(x => x.Date == day.Date);
+                    if (IsOutsideDataReqestested)
+                    {
+                        recentMatch = inDoorTemp.FirstOrDefault(x => x.Date == day.Date);
+                    }
+                    else
+                    {
+                        recentMatch = outDoorTemp.FirstOrDefault(x => x.Date == day.Date);
+                    }
+                    //hej
+                    sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {day.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+                    await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {day.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+                }
+                Console.WriteLine(sbd);
+            }
+        }
         public static async Task DisplayDailyTemp(List<WeatherData> data)
         {
             List<TempStatistics> inDoorTemp = DataExtraction.AverageTempDay(data, "Inne");
@@ -40,6 +162,107 @@ namespace TempData_grupparbete.Services
                 await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
             }
             Console.WriteLine(sbd);
+        }
+        public static async Task DisplayDailyMonthSorted(List<WeatherData> data)
+        {
+            List<TempStatistics> inDoorTemp = DataExtraction.AverageTempMonth(data, "Inne");
+            List<TempStatistics> outDoorTemp = DataExtraction.AverageTempMonth(data, "Ute");
+
+            while (true)
+            {
+                bool IsOutsideDataReqestested = YesOrNo("Sortera enligt utomhus?");
+                var recentTemp = outDoorTemp;
+                if (IsOutsideDataReqestested)
+                {
+                    header = outdoorHeaderMonth;
+                    recentTemp = outDoorTemp;
+                }
+                else if (!IsOutsideDataReqestested)
+                {
+                    header = indoorHeaderMonth;
+                    recentTemp = inDoorTemp;
+                }
+                Console.WriteLine($"[M] för att sortera enligt mögel\n[T] för att sortera enligt temperatur\n[H] för luftfuktighet\n[D] för datum");
+                ConsoleKey key = Console.ReadKey(true).Key;
+
+
+                switch (key)
+                {
+                    case ConsoleKey.M:
+                        bool answer = YesOrNo("Stigande?");
+                        if (answer)
+                        {
+                            recentTemp = recentTemp.OrderBy(d => d.Mold).ToList();
+                        }
+                        else if (!answer)
+                        {
+                            recentTemp = recentTemp.OrderByDescending(d => d.Mold).ToList();
+                        }
+                        break;
+
+                    case ConsoleKey.T:
+                        bool temp = YesOrNo("Stigande temperatur?");
+                        if (temp)
+                        {
+                            recentTemp = recentTemp.OrderBy(d => d.Temp).ToList();
+                        }
+                        else
+                        {
+                            recentTemp = recentTemp.OrderByDescending(d => d.Temp).ToList();
+                        }
+                        break;
+                    case ConsoleKey.H:
+                        bool humidity = YesOrNo("Stigande luftfuktighet?");
+                        if (humidity)
+                        {
+                            recentTemp = recentTemp.OrderBy(d => d.Humidity).ToList();
+                        }
+                        else
+                        {
+                            recentTemp = recentTemp.OrderByDescending(d => d.Humidity).ToList();
+                        }
+                        break;
+                    case ConsoleKey.D:
+                        bool date = YesOrNo("Senaste datum?");
+                        if (date)
+                        {
+                            recentTemp = recentTemp.OrderBy(d => d.Date).ToList();
+                        }
+                        else
+                        {
+                            recentTemp = recentTemp.OrderByDescending(d => d.Date).ToList();
+                        }
+
+                        break;
+                }
+
+
+                StringBuilder sbm = new StringBuilder();
+                sbm.AppendLine(header);
+                sbm.AppendLine();
+                await Writer.Delete("monthlytemp.txt");
+                await Writer.WriteRow("monthlytemp.txt", header);
+                await Writer.WriteRow("monthlytemp.txt", "");
+
+
+                foreach (var month in recentTemp)
+                {
+                    var recentMatch = inDoorTemp.FirstOrDefault(x => x.Date == month.Date);
+                    if (IsOutsideDataReqestested)
+                    {
+                        recentMatch = inDoorTemp.FirstOrDefault(x => x.Date == month.Date);
+                    }
+                    else
+                    {
+                        recentMatch = outDoorTemp.FirstOrDefault(x => x.Date == month.Date);
+                    }
+
+                    sbm.AppendLine($"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {month.Mold.ToString("0"), -6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+                    await Writer.WriteRow("monthlytemp.txt",$"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {month.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+
+                }
+                Console.WriteLine(sbm);
+            }
         }
         public static async Task DisplayDailyMonth(List<WeatherData> data)
         {
@@ -134,5 +357,7 @@ namespace TempData_grupparbete.Services
                 Console.WriteLine($"{day.Date.ToString("yyyy-MM-dd")} {day.Temp.ToString("0.0")}°C");
             }
         }
+
+
     }
 }

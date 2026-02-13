@@ -26,7 +26,7 @@ namespace TempData_grupparbete.Services
                 ConsoleKey key = Console.ReadKey(true).Key;
                 Action action = key switch
                 {
-                    ConsoleKey.D => async () => await CollectedDataDisplay.DisplayDailyTemp(ReadFile.weatherData),
+                    ConsoleKey.D => async () => await CollectedDataDisplay.DisplayDailyTempWithSorting(ReadFile.weatherData),
                     ConsoleKey.S => async () => { Console.WriteLine("---SÖK---\n"); Search.SearchInput(ReadFile.weatherData); }
                     ,
                     ConsoleKey.B => () =>
@@ -35,7 +35,7 @@ namespace TempData_grupparbete.Services
                         Console.WriteLine($"{"Rad",-10} | Data\n"); CollectedDataDisplay.DisplayBadData();
                     }
                     ,
-                    ConsoleKey.M => async () => await CollectedDataDisplay.DisplayDailyMonth(ReadFile.weatherData),
+                    ConsoleKey.M => async () => await CollectedDataDisplay.DisplayDailyMonthSorted(ReadFile.weatherData),
                     ConsoleKey.H => () => { Console.WriteLine("---Meterologisk Höst---\n"); CollectedDataDisplay.SearchForMetrologicalSeasonStart(ReadFile.weatherData, 10, 5, "Höst"); }
                     ,
                     ConsoleKey.V => () =>
