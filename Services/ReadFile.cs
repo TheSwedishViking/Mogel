@@ -17,18 +17,22 @@ namespace TempData_grupparbete.Services
     {
         
         public static string path = "../../../File/";
+        public static List<WeatherData> weatherData = new List<WeatherData>();
+        public static StringBuilder sbBadData = new StringBuilder();
+        public static Stopwatch sw = new Stopwatch();
         public static void ReadAll()
         {
             StringBuilder sb = new StringBuilder();
-            StringBuilder sbBadData = new StringBuilder();
-            Stopwatch sw = Stopwatch.StartNew();
-            List<WeatherData> weatherData = new List<WeatherData>();
+           
+            
+            
             List<(int, string)> badData = new List<(int, string)>();
             Regex inneTemp = new Regex(@"^(?<year>201[6-7])-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[1-2]\d|3[01]) (?<hour>[0-1]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d),(?<location>Inne),(?<temp>[1-3]\d.\d),(?<rh>[1-8]\d)$",RegexOptions.Compiled);
             Regex uteTemp = new Regex(@"^(?<year>201[6-7])-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[1-2]\d|3[01]) (?<hour>[0-1]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d),(?<location>Ute),(?<temp>-?[0-3]?\d.\d),(?<rh>100|\d?\d)$",RegexOptions.Compiled);
             int badDataCount = 0;
             int badDataRow = 0;
             string fullBadData;
+            sw.Start();
             try
             {
                 using (StreamReader reader = new StreamReader(path + "tempdata.txt"))
@@ -73,29 +77,6 @@ namespace TempData_grupparbete.Services
                         }
                     }
                     sw.Stop();
-                    Console.WriteLine("Sammanställning av data tog "+ sw + "ms");
-                    ConsoleKey key = Console.ReadKey(true).Key;
-                    Action action = key switch
-                    {
-                        ConsoleKey.D => () => CollectedDataDisplay.DisplayDailyTemp(weatherData),
-                        ConsoleKey.S => () => Search.SearchDate(weatherData),
-                        ConsoleKey.B => () => { Console.WriteLine("---Felaktig data---\n"); Console.WriteLine(sbBadData); },
-                        ConsoleKey.M => () => CollectedDataDisplay.DisplayDailyMonth(weatherData),
-                        _ => () =>{ Console.WriteLine("Felaktig inmantning"); Thread.Sleep(1000); }
-                    };
-                    action();
-                    Console.ReadKey();
-                    Console.WriteLine(sb);
-                    sw.Stop();
-                    Console.WriteLine(sw.ElapsedMilliseconds + "ms " + rowCount + " rader");
-                    Console.WriteLine("---Felaktig data---");
-                    Console.WriteLine();
-                    Console.WriteLine($"{"Rad",-10} | Data");
-                    Console.WriteLine(sbBadData);
-                    Console.WriteLine(badDataCount);
-                    
-                    Search.SearchDate(weatherData);
-                    Console.ReadKey();
                 }
             }
             catch

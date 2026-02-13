@@ -7,6 +7,7 @@ namespace TempData_grupparbete
         static void Main(string[] args)
         {
             ReadFile.ReadAll();
+            UI.StartMenu();
         }
     }
 }
