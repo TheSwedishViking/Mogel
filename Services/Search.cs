@@ -81,7 +81,7 @@ namespace TempData_grupparbete.Services
                 Console.WriteLine("Hittar inte [Datum]");
             }
                 Console.WriteLine(sb);
-                Console.ReadLine();
+                
                  
         }
         public static void SearchMonth(List<WeatherData> data, int year, int month)
@@ -110,7 +110,6 @@ namespace TempData_grupparbete.Services
                 Console.WriteLine("Hittar inte [Datum]");
             }
             Console.WriteLine(sb);
-            Console.ReadLine();
             return;
 
         }

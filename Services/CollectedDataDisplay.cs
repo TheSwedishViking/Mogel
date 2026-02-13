@@ -19,7 +19,7 @@ namespace TempData_grupparbete.Services
         public static int badDataCount = 0;
         public static int badDataRow = 0;
         public static string fullBadData;
-        public static string header = $"{"Datum",-8} | {"Mätpknt.",-8} | {"InneTemp",-7} | {"RH",-4} | {"Mätpknt.",-8} | {"UteTemp",-6} | RH";
+        public static string header = $"{"Datum",-8} | {"Mätpknt.",-8} | {"InneTemp",-7} | {"RH",-4} | {"Mätpknt.",-8} | {"UteTemp",-6} | {"RH%",-5}| Mögel%";
 
         public static async Task DisplayDailyTemp(List<WeatherData> data)
         {
@@ -36,7 +36,7 @@ namespace TempData_grupparbete.Services
             {
                 var recentMatch = outDoorTemp.First(o => o.Date == day.Date);
 
-                sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")}");
+                sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
                 await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
             }
             Console.WriteLine(sbd);
@@ -56,8 +56,8 @@ namespace TempData_grupparbete.Services
             {
                 var recentMatch = outDoorTemp.First(o => o.Date == month.Date);
 
-                sbm.AppendLine($"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")}");
-                await Writer.WriteRow("monthlytemp.txt", $"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")}");
+                sbm.AppendLine($"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")}| {recentMatch.Mold.ToString("0")}");
+                await Writer.WriteRow("monthlytemp.txt", $"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
 
             }
             Console.WriteLine(sbm);
@@ -75,24 +75,64 @@ namespace TempData_grupparbete.Services
         {
             Console.WriteLine(sbBadData);
         }
-        public static double GetMoldRiskPercentage(double temp, double rh)
+        internal static async Task SearchForMetrologicalSeasonStart(List<WeatherData> weatherData, int autumnTemp, int countStreak, string season)
         {
-            if (rh <= 80 || temp <= 0 || temp >= 50)
+            //Hitta höst eller vinter start
+            //5 dagar i rad med medelvärde utomhus under 10 celcius
+            bool fiveDayStreak = false;
+            List<TempStatistics> outDoorTemps = DataExtraction.AverageTempDay(weatherData, "Ute");
+            List<TempStatistics> colderDays = new List<TempStatistics>();
+            TempStatistics seasonStart = new TempStatistics();
+            int fallDayCounter = 0;
+            //Loopa
+            while (!fiveDayStreak && countStreak > 0)
             {
-                return 0;
+                fallDayCounter = 0;
+                colderDays.Clear();
+                //I alla dagar
+                foreach (TempStatistics t in outDoorTemps)
+                {
+                    //Temperatur som är under det som behövs - bra, räkna upp och lägg till
+                    if (t.Temp < autumnTemp)
+                    {
+                        fallDayCounter++;
+                        colderDays.Add(t);
+                    }
+                    //Bryt streak, inte dagar i följd här
+                    else
+                    {
+                        fallDayCounter = 0;
+                        colderDays.Clear();
+                    }
+                    //Har vi så många dagar som behövs för countern
+                    if (fallDayCounter == countStreak)
+                    {
+                        //Är vi färdiga, gå vidare
+                        fiveDayStreak = true;
+                        break;
+                    }
+                }
+                if (!fiveDayStreak)
+                {
+                    countStreak--;
+                }
+
             }
-
-            double criticalRh = 100 - temp;
-
-            if (criticalRh < 80) criticalRh = 80;
-
-            double range = 100 - 80;
-            double currentAboveBase = rh - 80;
-
-            double riskPercent = (currentAboveBase / range) * 100;
-
-            return Math.Round(riskPercent, 1);
+            if (countStreak != 5)
+            {
+                Console.WriteLine($"Hittade inte 5 dagar i rad för säsong {season}, vi hade istället {countStreak} i följd av temperatur under {autumnTemp}°C");
+            }
+            else
+            {
+                Console.WriteLine($"Det fanns dagar i rad under {autumnTemp}°C för att metrologisk {season} ska starta!");
+            }
+            seasonStart = colderDays.Last();
+            Console.WriteLine($"{season} startar den {seasonStart.Date.ToString("yyyy-MM-dd")}");
+            Console.WriteLine($"{countStreak} dagar i rad från dessa dagar;");
+            foreach (var day in colderDays)
+            {
+                Console.WriteLine($"{day.Date.ToString("yyyy-MM-dd")} {day.Temp.ToString("0.0")}°C");
+            }
         }
-
     }
 }
