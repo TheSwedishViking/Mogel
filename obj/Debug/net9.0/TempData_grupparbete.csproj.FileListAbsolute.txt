@@ -1,0 +1,15 @@
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\bin\Debug\net9.0\TempData_grupparbete.exe
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\bin\Debug\net9.0\TempData_grupparbete.deps.json
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\bin\Debug\net9.0\TempData_grupparbete.runtimeconfig.json
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\bin\Debug\net9.0\TempData_grupparbete.dll
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\bin\Debug\net9.0\TempData_grupparbete.pdb
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\TempData_grupparbete.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\TempData_grupparbete.AssemblyInfoInputs.cache
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\TempData_grupparbete.AssemblyInfo.cs
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\TempData_grupparbete.csproj.CoreCompileInputs.cache
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\TempData_grupparbete.sourcelink.json
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\TempData_grupparbete.dll
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\refint\TempData_grupparbete.dll
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\TempData_grupparbete.pdb
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\TempData_grupparbete.genruntimeconfig.cache
+C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\obj\Debug\net9.0\ref\TempData_grupparbete.dll

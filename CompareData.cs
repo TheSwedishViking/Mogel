@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 
 namespace VäderUppgift
 {
@@ -13,9 +6,9 @@ namespace VäderUppgift
     {
 
         public static void Run()
-        {  
+        {
             string urlData = @"C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\bin\Debug\net9.0\cleanedDataWithIdAndSeperator.txt";
-            
+
             var dataLines = File.ReadAllLines(urlData).Select(line =>
             {
                 var data = line.Split(';');
@@ -51,16 +44,15 @@ namespace VäderUppgift
 
                 //inom/utomhusData
                 var CorrectDateInside = dataLines.Where(l => l.Datum == searchDate).ToList();
-                
-               
+
+
                 //AllData
-                var CorrectDate = dataLines.Where(l => l.Datum  == searchDate).ToList();
-                if(CorrectDate.Count == 0)
+                var CorrectDate = dataLines.Where(l => l.Datum == searchDate).ToList();
+                if (CorrectDate.Count == 0)
                 {
                     Console.WriteLine("Inga data för det datumet.");
                     continue;
                 }
-                
 
 
 
@@ -71,11 +63,12 @@ namespace VäderUppgift
 
 
 
-                    foreach (var item in CorrectDate)
-                    {
-                        Console.WriteLine($"Datum: {item.Datum} Tid: {item.Tid} Inne/ute: " +
-                        $"{(item.IsInside ? "Inne" : "Ute")} Temp: {item.Temp} Luftfuktighet: {item.AirHumidity}");
-                    }
+
+                foreach (var item in CorrectDate)
+                {
+                    Console.WriteLine($"Datum: {item.Datum} Tid: {item.Tid} Inne/ute: " +
+                    $"{(item.IsInside ? "Inne" : "Ute")} Temp: {item.Temp} Luftfuktighet: {item.AirHumidity}");
+                }
 
 
                 Console.WriteLine("Vill du se högsta temperaturen: H? Eller lägsta: L , eller Genomsnitt: G  ");
@@ -88,9 +81,9 @@ namespace VäderUppgift
                 switch (Console.ReadLine().ToUpper())
                 {
                     case "H":
-                        
-                          var maxTemp =  CorrectDate.Max(t => t.Temp);
-                            Console.WriteLine(maxTemp.ToString());                       
+
+                        var maxTemp = CorrectDate.Max(t => t.Temp);
+                        Console.WriteLine(maxTemp.ToString());
                         break; //Högsta 
                     case "L":
                         var lowestTemp = CorrectDate.Min(t => t.Temp);
@@ -145,9 +138,9 @@ namespace VäderUppgift
                                 }
                                 break;
                             case "G":
-                                    Console.WriteLine("Inside = inne     , Ute = ute");
-                                    isInside = Console.ReadLine().ToLower();
-                                
+                                Console.WriteLine("Inside = inne     , Ute = ute");
+                                isInside = Console.ReadLine().ToLower();
+
                                 if (isInside == "inne")
                                 {
                                     inputIsValid = true;
@@ -161,10 +154,8 @@ namespace VäderUppgift
 
 
 
-
-
                                 var datesToCompare = dataLines.Where(
-                                d=> d.IsInside == inputIsValid && 
+                                d => d.IsInside == inputIsValid &&
                                 d.Datum >= searchDate &&
                                 d.Datum <= fromXToY)
                                     .ToList();
@@ -172,7 +163,9 @@ namespace VäderUppgift
                                 var averagePerDay = datesToCompare
                                     .GroupBy(d => d.Datum).Select(g => new GenomsnittPerDag
                                     {
-                                          Datum = g.Key,AverageTemp = g.Average(x => x.Temp), Fukt = g.Average(x => x.AirHumidity),
+                                        Datum = g.Key,
+                                        AverageTemp = g.Average(x => x.Temp),
+                                        Fukt = g.Average(x => x.AirHumidity),
                                     }).ToList();
 
                                 Console.WriteLine("Vill du sortera efter LuftFuktighet? ( L )   Eller Temp ( T )");
@@ -196,7 +189,7 @@ namespace VäderUppgift
                                 }
                                 break;
                         }
-                            
+
 
                         Console.WriteLine("Vill du se högsta temperaturen: H? Eller lägsta: L , eller Genomsnitt: G   , sorterat efter temp/fukt X");
 
@@ -218,7 +211,7 @@ namespace VäderUppgift
                             case "G":
                                 avrageTemp = tempCompareeDateList.Average(t => t.Temp);
                                 avrageFukt = tempCompareeDateList.Average(t => t.AirHumidity);
-                                Console.WriteLine(avrageTemp.ToString() +  " Grader,  " + avrageFukt + "% fukt");
+                                Console.WriteLine(avrageTemp.ToString() + " Grader,  " + avrageFukt + "% fukt");
 
                                 break;//Genomsnitt  Datumsökning
                             case "X":
@@ -226,9 +219,9 @@ namespace VäderUppgift
 
 
                                 var OrderTemp = dailyAVG;
-                                foreach (var item in OrderTemp.OrderBy(t => t.AverageTemp ))
+                                foreach (var item in OrderTemp.OrderBy(t => t.AverageTemp))
                                 {
-                                    Console.WriteLine(item.Datum + " + temp: "+item.AverageTemp);
+                                    Console.WriteLine(item.Datum + " + temp: " + item.AverageTemp);
                                 }
 
                                 break;//Sorterat efter temp/fukt Datumsökning
@@ -273,7 +266,7 @@ namespace VäderUppgift
                         break;////InomUtom Lägsta
                     case "E":
                         Console.WriteLine("Inside = inne     , Ute = ute");
-                        insideOutside = Console.ReadLine().ToLower();    
+                        insideOutside = Console.ReadLine().ToLower();
                         if (insideOutside == "inne")
                         {
                             insideStatus = true;
@@ -298,101 +291,160 @@ namespace VäderUppgift
                 }
             }
 
-
-
-
-
-            //Fukt frågor   +  fuktighet per dag
-
-
-
-
-
-
         }
 
         public static void Metreologi()
         {
-            Console.WriteLine("Meteorologisk Höst   H");
-            Console.WriteLine("Meteorologisk Vinter  V");
-            char key = char.ToLower(Console.ReadKey(true).KeyChar);
-            switch (key)
+            string urlData = @"C:\Users\robin\Documents\SystemutvecklingMapp\coolapp2\Februari-2026\VäderUppgift\M-gel\bin\Debug\net9.0\cleanedDataWithIdAndSeperator.txt";
+
+            var dataLines = File.ReadAllLines(urlData).Select(line =>
             {
-                case 'h':
+                var data = line.Split(';');
+
+                return new EveryDataBracket
+                {
+                    Datum = DateOnly.Parse(data[1]),
+                    Tid = TimeOnly.Parse(data[2]),
+                    IsInside = data[3] == "Inne",
+                    Temp = float.Parse(data[4], CultureInfo.InvariantCulture),
+                    AirHumidity = short.Parse(data[5])
+                };
+            }).ToList();
 
 
+            var outsideData = dataLines
+                .Where(d => !d.IsInside)
+                .ToList();
+
+            var dailyAverages = outsideData
+            .GroupBy(d => d.Datum)
+            .Select(g => new GenomsnittPerDag
+            {
+                Datum = g.Key,
+                AverageTemp = g.Average(x => x.Temp)
+            })
+             .OrderBy(d => d.Datum)
+             .ToList();
+
+            int consecutiveDays = 0;
+
+            foreach (var day in dailyAverages)
+            {
+                if (day.AverageTemp < 10)
+                {
+                    consecutiveDays++;
+                    Console.WriteLine(day.Datum + " temp " + day.AverageTemp);
+                    if (consecutiveDays == 5)
+                    {
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    break;
-                case 'v':
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    break;
+                        Console.WriteLine("Meteorologisk höst börjar: " + day.Datum);
+                        Console.WriteLine("Klicka på valfri knapp för att se metreologisk vinter!");
+                        Console.ReadKey(true);
+                        MetreologiVinter(dailyAverages);
+                        Run();
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    consecutiveDays = 0;
+                }
             }
 
 
 
 
+        }
+        public static void MetreologiVinter(List<GenomsnittPerDag> dailyAverages)
+        {
+            Console.Clear();
+            int consecutiveDays = 0;
+            int dayException = 5;
+            while (true)
+            {
+                foreach (var day in dailyAverages)
+                {
+                    if (day.AverageTemp <= 0)
+                    {
+                        consecutiveDays++;
+                        Console.WriteLine(day.Datum + " temp " + day.AverageTemp);
+                        if (consecutiveDays == dayException)
+                        {
+
+
+                            Console.WriteLine("Meteorologisk Vinter börjar: " + day.Datum);
+                            Console.ReadKey(true);
+                            Run();
+
+                        }
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        consecutiveDays = 0;
+                    }
+                }
+                dayException--;
+            }
+
+
+
 
         }
 
-
-
-
-
-
-
-
-
     }
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
