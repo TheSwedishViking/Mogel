@@ -139,6 +139,10 @@ namespace TempData_grupparbete.Services
                     //hej
                     sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {day.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
                     await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {day.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+=======
+
+                    sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {day.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+                    await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")}  | {day.Mold.ToString("0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
                 }
                 Console.WriteLine(sbd);
             }
@@ -259,6 +263,7 @@ namespace TempData_grupparbete.Services
 
                     sbm.AppendLine($"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {month.Mold.ToString("0"), -6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
                     await Writer.WriteRow("monthlytemp.txt",$"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {month.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+                    await Writer.WriteRow("monthlytemp.txt", $"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0"), -4} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
 
                 }
                 Console.WriteLine(sbm);
@@ -279,7 +284,7 @@ namespace TempData_grupparbete.Services
             {
                 var recentMatch = outDoorTemp.First(o => o.Date == month.Date);
 
-                sbm.AppendLine($"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")}| {recentMatch.Mold.ToString("0")}");
+                sbm.AppendLine($"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")}| {recentMatch.Mold.ToString("0")}");
                 await Writer.WriteRow("monthlytemp.txt", $"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
 
             }
