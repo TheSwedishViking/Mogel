@@ -17,7 +17,6 @@ namespace TempData_grupparbete.Services
     {
         public static int rowCount = 0;
         public static string path = "../../../File/";
-        public static List<WeatherData> weatherData = new List<WeatherData>();
         //public static StringBuilder sbBadData = new StringBuilder();
         public static Stopwatch sw = new Stopwatch();
         public static void ReadAll()
@@ -65,7 +64,15 @@ namespace TempData_grupparbete.Services
                             string fullSring = rowCount + " " + time;
                             sb.AppendLine(fullSring);
                             rowCount++;
-                            weatherData.Add(data);
+                            if (data.DateTime.Year==2016 && data.DateTime.Month==5)
+                            {
+                                continue;
+                            }
+                            if(data.DateTime.Year ==2017 && data.DateTime.Month == 1)
+                            {
+                                continue;
+                            }
+                            Program.WeatherData.Add(data);
                         }
                         else
                         {
@@ -77,7 +84,20 @@ namespace TempData_grupparbete.Services
                             //badData.Add((badDataRow,line));
                         }
                     }
+
+                    //Ta bort förkorta månader, månader med mindre än 2 dagar registerade, justera efter beviljan
+                    Program.WeatherData = Program.WeatherData.GroupBy //Gruppera efter år och månad
+                        (   m=> new 
+                            {
+                                m.DateTime.Year, 
+                                m.DateTime.Month,
+                            }).
+                        Where(g=>g.Select(m=>m.DateTime.Date). //Selecta 
+                        Distinct(). //Unika datum, så vi inte räknar på 31 Maj 500 gånger
+                        Count()>1). //Högre än 1 => Månader med mer än 1 dag registerard
+                        SelectMany(r=>r).OrderBy(e=>e.DateTime).ToList(); //Weather data tar emot en ny kopia av listan
                     sw.Stop();
+                    
                 }
             }
             catch

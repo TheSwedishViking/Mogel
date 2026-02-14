@@ -13,7 +13,7 @@ namespace TempData_grupparbete.Services
         {
             while (true)
             {
-                Console.Clear();
+                Console.Write("\u001bc\x1b[3J");
                 Console.WriteLine("Sammanställning av data tog " + ReadFile.sw + "ms");
                 Console.WriteLine("Grupp 5 Väderdata applikation");
                 Console.WriteLine($"[D] för att visa medelvärde av dagliga temperaturer\n" +
@@ -26,13 +26,13 @@ namespace TempData_grupparbete.Services
                 ConsoleKey key = Console.ReadKey(true).Key;
                 Action action = key switch
                 {
-                    ConsoleKey.D => async () => await CollectedDataDisplay.DisplayDailyTempWithSorting(ReadFile.weatherData),
-                    ConsoleKey.S => async () => { Console.WriteLine("---SÖK---\n"); Search.SearchInput(ReadFile.weatherData); }
+                    ConsoleKey.D => async () => await CollectedDataDisplay.DisplayDailyTempWithSorting(Program.WeatherData),
+                    ConsoleKey.S => async () => { Console.WriteLine("---SÖK---\n"); Search.SearchInput(Program.WeatherData); }
                     ,
                     ConsoleKey.B => () =>{ Console.WriteLine("---Felaktig data---\n"); Console.WriteLine($"{"Rad",-10} | Data\n"); CollectedDataDisplay.DisplayBadData();},
-                    ConsoleKey.M => async () => await CollectedDataDisplay.DisplayDailyMonthSorted(ReadFile.weatherData),
-                    ConsoleKey.H => () => { Console.WriteLine("---Meterologisk Höst---\n"); CollectedDataDisplay.SearchForMetrologicalSeasonStart(ReadFile.weatherData, 10, 5, "Höst"); },
-                    ConsoleKey.V => () => { Console.WriteLine("---Meterologisk Vinter\n"); CollectedDataDisplay.SearchForMetrologicalSeasonStart(ReadFile.weatherData, 0, 5, "Vinter"); },
+                    ConsoleKey.M => async () => await CollectedDataDisplay.DisplayDailyMonthSorted(Program.WeatherData),
+                    ConsoleKey.H => () => { Console.WriteLine("---Meterologisk Höst---\n"); CollectedDataDisplay.SearchForMetrologicalSeasonStart(Program.WeatherData, 10, 5, "Höst"); },
+                    ConsoleKey.V => () => { Console.WriteLine("---Meterologisk Vinter\n"); CollectedDataDisplay.SearchForMetrologicalSeasonStart(Program.WeatherData, 0, 5, "Vinter"); },
                     ConsoleKey.Q => () => { },
                     _ => () => { Console.WriteLine("Felaktig inmantning"); Thread.Sleep(1000); }
                 };

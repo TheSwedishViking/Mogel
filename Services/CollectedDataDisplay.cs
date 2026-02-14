@@ -21,6 +21,9 @@ namespace TempData_grupparbete.Services
         public static int badDataCount = 0;
         public static int badDataRow = 0;
         public static string fullBadData;
+
+        public static string moldHeader = $"{"Datum",-5} | {"Mätpknt.",-8} | {"UteTemp",-8} | {"RH%",-5}| Mögel%";
+
         public static string indoorHeader = $"{"Datum",-8} | {"Mätpknt.",-8} | {"InneTemp",-7} | {"RH",-4} | Mögel% | {"Mätpknt.",-8} | {"UteTemp",-8} | {"RH%",-5}| Mögel%";
         public static string outdoorHeader = $"{"Datum",-8} | {"Mätpknt.",-8} | {"UteTemp",-8} | {"RH%",-5}| Mögel% | {"Mätpknt.",-8} | {"InneTemp",-6} | {"RH",-5}| Mögel%";
 
@@ -278,6 +281,38 @@ namespace TempData_grupparbete.Services
                 Console.ReadLine();
                 return;
             }
+        }
+        public static async Task WriteMold(List<WeatherData> data)
+        {
+            List<TempStatistics> inDoorTemp = DataExtraction.AverageTempMonth(data, "Inne");
+            List<TempStatistics> outDoorTemp = DataExtraction.AverageTempMonth(data, "Ute");
+
+            var recentTemp = outDoorTemp;
+
+            recentTemp = recentTemp.OrderBy(d => d.Mold).ToList();
+
+            await Writer.WriteRow("moldinfo.txt", moldHeader);
+            await Writer.WriteRow("moldinfo.txt", "");
+
+
+            foreach (var month in recentTemp)
+            {
+
+                await Writer.WriteRow("moldinfo.txt", $"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {month.Mold.ToString("0"),-6}");
+                //await Writer.WriteRow("monthlytemp.txt", $"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0"), -4} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+
+            }
+            await Writer.WriteRow("moldinfo.txt", "");
+            await Writer.WriteRow("moldinfo.txt", "Mögel risken beräknas med;");
+            await Writer.WriteRow("moldinfo.txt", "En risk punkt (kritisk Lf) från 100 - angiven temperatur. Under 0 och över 50 är det ingen mögel chans. \n");
+            await Writer.WriteRow("moldinfo.txt", "Risk punkten är som lägst 80, det är lägsta punkten för att mögel ska börja växa inom 8 veckor. \n");
+            await Writer.WriteRow("moldinfo.txt", "Vi har ett span inom 100 - 80 (då en mögel intervall av 20), där 100 är maximal mögel tillväxt och 80 lägsta hotfulla tillväxt.\n");
+            await Writer.WriteRow("moldinfo.txt", "Överskotten från bas är luftfuktighet - minsta mögelpunkt (80).\n");
+            await Writer.WriteRow("moldinfo.txt", "Den total mögelrisken blir då;\n");
+            await Writer.WriteRow("moldinfo.txt", "Mögelrisk = (Överskott från bas / Mögel spann) * 100\n");
+            await Writer.WriteRow("moldinfo.txt", "Om kritiska luftikghetensnivån är >80 (K.Lf = 100 - temperatur)\n");
+            await Writer.WriteRow("moldinfo.txt", "Mögelrisk = ((Lf-80)/20)*100\n");
+
         }
         //public static async Task DisplayDailyMonth(List<WeatherData> data)
         //{

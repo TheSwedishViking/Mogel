@@ -1,0 +1,27 @@
+Datum | Mätpknt. | UteTemp  | RH%  | Mögel%
+
+16-06 | 15341    | 15,8     | 53,2 | 0     
+16-07 | 4391     | 20,2     | 53,0 | 0     
+16-08 | 1919     | 18,1     | 48,6 | 0     
+16-09 | 27733    | 16,2     | 60,4 | 0     
+16-10 | 33326    | 8,2      | 64,6 | 0     
+16-12 | 23524    | 2,5      | 77,9 | 0     
+16-11 | 33312    | 3,3      | 83,5 | 18    
+
+Mögel risken beräknas med;
+En risk punkt (kritisk Lf) från 100 - angiven temperatur. Under 0 och över 50 är det ingen mögel chans. 
+
+Risk punkten är som lägst 80, det är lägsta punkten för att mögel ska börja växa inom 8 veckor. 
+
+Vi har ett span inom 100 - 80 (då en mögel intervall av 20), där 100 är maximal mögel tillväxt och 80 lägsta hotfulla tillväxt.
+
+Överskotten från bas är luftfuktighet - minsta mögelpunkt (80).
+
+Den total mögelrisken blir då;
+
+Mögelrisk = (Överskott från bas / Mögel spann) * 100
+
+Om kritiska luftikghetensnivån är >80 (K.Lf = 100 - temperatur)
+
+Mögelrisk = ((Lf-80)/20)*100
+
