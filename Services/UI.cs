@@ -29,19 +29,10 @@ namespace TempData_grupparbete.Services
                     ConsoleKey.D => async () => await CollectedDataDisplay.DisplayDailyTempWithSorting(ReadFile.weatherData),
                     ConsoleKey.S => async () => { Console.WriteLine("---SÖK---\n"); Search.SearchInput(ReadFile.weatherData); }
                     ,
-                    ConsoleKey.B => () =>
-                    {
-                        Console.WriteLine("---Felaktig data---\n");
-                        Console.WriteLine($"{"Rad",-10} | Data\n"); CollectedDataDisplay.DisplayBadData();
-                    }
-                    ,
+                    ConsoleKey.B => () =>{ Console.WriteLine("---Felaktig data---\n"); Console.WriteLine($"{"Rad",-10} | Data\n"); CollectedDataDisplay.DisplayBadData();},
                     ConsoleKey.M => async () => await CollectedDataDisplay.DisplayDailyMonthSorted(ReadFile.weatherData),
-                    ConsoleKey.H => () => { Console.WriteLine("---Meterologisk Höst---\n"); CollectedDataDisplay.SearchForMetrologicalSeasonStart(ReadFile.weatherData, 10, 5, "Höst"); }
-                    ,
-                    ConsoleKey.V => () =>
-                    {
-                        Console.WriteLine("---Meterologisk Vinter\n"); CollectedDataDisplay.SearchForMetrologicalSeasonStart(ReadFile.weatherData, 0, 5, "Vinter");
-                },
+                    ConsoleKey.H => () => { Console.WriteLine("---Meterologisk Höst---\n"); CollectedDataDisplay.SearchForMetrologicalSeasonStart(ReadFile.weatherData, 10, 5, "Höst"); },
+                    ConsoleKey.V => () => { Console.WriteLine("---Meterologisk Vinter\n"); CollectedDataDisplay.SearchForMetrologicalSeasonStart(ReadFile.weatherData, 0, 5, "Vinter"); },
                     ConsoleKey.Q => () => { },
                     _ => () => { Console.WriteLine("Felaktig inmantning"); Thread.Sleep(1000); }
                 };
@@ -49,7 +40,6 @@ namespace TempData_grupparbete.Services
                 action();
                 if (key == ConsoleKey.Q)
                     return;
-                Console.ReadKey(true);
             }
         }
     }

@@ -32,18 +32,22 @@ namespace TempData_grupparbete.Services
             while (true)
             {
                 Console.WriteLine(field + " J/N");
-                string? input = Console.ReadLine()?.ToUpper();
-                if (input.ToLower() == "j")
+
+                var key = Console.ReadKey(true);
+                
+                if (key.Key == ConsoleKey.J)
                 {
                     return true;
                 }
-                else if (input.ToLower() =="n")
+                else if (key.Key == ConsoleKey.N)
                 {
                     return false;
                 }
                 else
                 {
                     Console.WriteLine("Felaktig inmatning");
+                    Thread.Sleep(500);
+                    Console.Clear();
                 }
             }
         }
@@ -123,6 +127,7 @@ namespace TempData_grupparbete.Services
 
          
                 sbd.AppendLine(header);
+                sbd.AppendLine();
                 await Writer.Delete("dailytemp.txt");
                 await Writer.WriteRow("dailytemp.txt", header);
                 await Writer.WriteRow("dailytemp.txt", "");
@@ -137,37 +142,39 @@ namespace TempData_grupparbete.Services
                     {
                         recentMatch = outDoorTemp.FirstOrDefault(x => x.Date == day.Date);
                     }
-                    //hej
+                    
                     sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {day.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
                     await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {day.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
-=======
 
-                    sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {day.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
-                    await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")}  | {day.Mold.ToString("0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+
+                    //sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {day.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+                    //await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")}  | {day.Mold.ToString("0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
                 }
                 Console.WriteLine(sbd);
+                Console.ReadLine();
+                return;
             }
         }
-        public static async Task DisplayDailyTemp(List<WeatherData> data)
-        {
-            List<TempStatistics> inDoorTemp = DataExtraction.AverageTempDay(data, "Inne");
-            List<TempStatistics> outDoorTemp = DataExtraction.AverageTempDay(data, "Ute");
-            StringBuilder sbd = new StringBuilder();
-            var recentTemp = inDoorTemp;
-            sbd.AppendLine(header);
-            sbd.AppendLine();
-            await Writer.Delete("dailytemp.txt");
-            await Writer.WriteRow("dailytemp.txt", header);
-            await Writer.WriteRow("dailytemp.txt", "");
-            foreach (var day in recentTemp)
-            {
-                var recentMatch = outDoorTemp.First(o => o.Date == day.Date);
+        //public static async Task DisplayDailyTemp(List<WeatherData> data)
+        //{
+        //    List<TempStatistics> inDoorTemp = DataExtraction.AverageTempDay(data, "Inne");
+        //    List<TempStatistics> outDoorTemp = DataExtraction.AverageTempDay(data, "Ute");
+        //    StringBuilder sbd = new StringBuilder();
+        //    var recentTemp = inDoorTemp;
+        //    sbd.AppendLine(header);
+        //    sbd.AppendLine();
+        //    await Writer.Delete("dailytemp.txt");
+        //    await Writer.WriteRow("dailytemp.txt", header);
+        //    await Writer.WriteRow("dailytemp.txt", "");
+        //    foreach (var day in recentTemp)
+        //    {
+        //        var recentMatch = outDoorTemp.First(o => o.Date == day.Date);
 
-                sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
-                await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
-            }
-            Console.WriteLine(sbd);
-        }
+        //        sbd.AppendLine($"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+        //        await Writer.WriteRow("dailytemp.txt", $"{day.Date:yy-MM-dd} | {day.Count,-8} | {day.Temp.ToString("0.0"),-8} | {day.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+        //    }
+        //    Console.WriteLine(sbd);
+        //}
         public static async Task DisplayDailyMonthSorted(List<WeatherData> data)
         {
             List<TempStatistics> inDoorTemp = DataExtraction.AverageTempMonth(data, "Inne");
@@ -264,33 +271,35 @@ namespace TempData_grupparbete.Services
 
                     sbm.AppendLine($"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {month.Mold.ToString("0"), -6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
                     await Writer.WriteRow("monthlytemp.txt",$"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {month.Mold.ToString("0"),-6} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-8} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
-                    await Writer.WriteRow("monthlytemp.txt", $"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0"), -4} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+                    //await Writer.WriteRow("monthlytemp.txt", $"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0"), -4} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
 
                 }
                 Console.WriteLine(sbm);
+                Console.ReadLine();
+                return;
             }
         }
-        public static async Task DisplayDailyMonth(List<WeatherData> data)
-        {
-            List<TempStatistics> inDoorTemp = DataExtraction.AverageTempMonth(data, "Inne");
-            List<TempStatistics> outDoorTemp = DataExtraction.AverageTempMonth(data, "Ute");
-            StringBuilder sbm = new StringBuilder();
-            var recentTemp = inDoorTemp;
-            sbm.AppendLine(header);
-            sbm.AppendLine();
-            await Writer.Delete("monthlytemp.txt");
-            await Writer.WriteRow("monthlytemp.txt", header);
-            await Writer.WriteRow("monthlytemp.txt", "");
-            foreach (var month in recentTemp)
-            {
-                var recentMatch = outDoorTemp.First(o => o.Date == month.Date);
+        //public static async Task DisplayDailyMonth(List<WeatherData> data)
+        //{
+        //    List<TempStatistics> inDoorTemp = DataExtraction.AverageTempMonth(data, "Inne");
+        //    List<TempStatistics> outDoorTemp = DataExtraction.AverageTempMonth(data, "Ute");
+        //    StringBuilder sbm = new StringBuilder();
+        //    var recentTemp = inDoorTemp;
+        //    sbm.AppendLine(header);
+        //    sbm.AppendLine();
+        //    await Writer.Delete("monthlytemp.txt");
+        //    await Writer.WriteRow("monthlytemp.txt", header);
+        //    await Writer.WriteRow("monthlytemp.txt", "");
+        //    foreach (var month in recentTemp)
+        //    {
+        //        var recentMatch = outDoorTemp.First(o => o.Date == month.Date);
 
-                sbm.AppendLine($"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")}| {recentMatch.Mold.ToString("0")}");
-                await Writer.WriteRow("monthlytemp.txt", $"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
+        //        sbm.AppendLine($"{month.Date:yy-MM} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")}| {recentMatch.Mold.ToString("0")}");
+        //        await Writer.WriteRow("monthlytemp.txt", $"{month.Date:yy-MM-dd} | {month.Count,-8} | {month.Temp.ToString("0.0"),-8} | {month.Humidity.ToString("0.0")} | {recentMatch.Count,-8} | {recentMatch.Temp.ToString("0.0"),-7} | {recentMatch.Humidity.ToString("0.0")} | {recentMatch.Mold.ToString("0")}");
 
-            }
-            Console.WriteLine(sbm);
-        }
+        //    }
+        //    Console.WriteLine(sbm);
+        //}
         public static async Task BadData(string line)
         {
             badDataCount++;
@@ -303,6 +312,7 @@ namespace TempData_grupparbete.Services
         public static void DisplayBadData()
         {
             Console.WriteLine(sbBadData);
+            Console.ReadLine();
         }
         internal static async Task SearchForMetrologicalSeasonStart(List<WeatherData> weatherData, int autumnTemp, int countStreak, string season)
         {
@@ -362,6 +372,7 @@ namespace TempData_grupparbete.Services
             {
                 Console.WriteLine($"{day.Date.ToString("yyyy-MM-dd")} {day.Temp.ToString("0.0")}°C");
             }
+            Console.ReadLine();
         }
 
 

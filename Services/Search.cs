@@ -18,13 +18,13 @@ namespace TempData_grupparbete.Services
                 int month;
                 int day = 0;
 
-                Console.WriteLine("Ange år");
+                Console.WriteLine("Ange år \"xxxx\"");
                 if (int.TryParse(Console.ReadLine(), out year))
                 {
-                    Console.WriteLine("Ange månad");
+                    Console.WriteLine("Ange månad \"xx\"");
                     if (int.TryParse(Console.ReadLine(), out month))
                     {
-                        Console.WriteLine("Ange dag eller [0] för att söka på månad");
+                        Console.WriteLine("Ange dag \"xx\" eller [0] för att söka på månad");
                         if (int.TryParse(Console.ReadLine(), out day))
                         {
                         if (day == 0)
@@ -74,14 +74,14 @@ namespace TempData_grupparbete.Services
 
             if (resultIn != null && resultOut != null)
             {
-                sb.Append($"{resultIn.Date.ToString("yy-MM-dd")} | {resultIn.Temp.ToString("0.0")} | {resultOut.Temp.ToString("0.0")}");
+                sb.Append($"{resultIn.Date.ToString("yyyy-MM-dd")} | {resultIn.Temp.ToString("0.0")} | {resultOut.Temp.ToString("0.0")}");
             }
             else
             {
                 Console.WriteLine("Hittar inte [Datum]");
             }
                 Console.WriteLine(sb);
-                
+                Console.ReadLine();
                  
         }
         public static void SearchMonth(List<WeatherData> data, int year, int month)
@@ -92,8 +92,8 @@ namespace TempData_grupparbete.Services
 
             }
 
-            List<TempStatistics> inDoorTemp = DataExtraction.AverageTempDay(data, "Inne");
-            List<TempStatistics> outDoorTemp = DataExtraction.AverageTempDay(data, "Ute");
+            List<TempStatistics> inDoorTemp = DataExtraction.AverageTempMonth(data, "Inne");
+            List<TempStatistics> outDoorTemp = DataExtraction.AverageTempMonth(data, "Ute");
             StringBuilder sb = new StringBuilder();
 
             var resultIn = inDoorTemp
@@ -103,15 +103,14 @@ namespace TempData_grupparbete.Services
 
             if (resultIn != null && resultOut != null)
             {
-                sb.Append($"{resultIn.Date.ToString("yy-MM-dd")} | {resultIn.Temp.ToString("0.0")} | {resultOut.Temp.ToString("0.0")}");
+                sb.Append($"{resultIn.Date.ToString("yyyy-MM-dd")} | {resultIn.Temp.ToString("0.0")} | {resultOut.Temp.ToString("0.0")}");
             }
             else
             {
                 Console.WriteLine("Hittar inte [Datum]");
             }
             Console.WriteLine(sb);
-            return;
-
+            Console.ReadLine();
         }
     }
 }
