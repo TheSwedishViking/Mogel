@@ -103,7 +103,7 @@ namespace TempData_grupparbete.Services
 
             if (resultIn != null && resultOut != null)
             {
-                sb.Append($"{resultIn.Date.ToString("yyyy-MM-dd")} | {resultIn.Temp.ToString("0.0")} | {resultOut.Temp.ToString("0.0")}");
+                sb.Append($"{resultIn.Date.ToString("yyyy-MM")} | {resultIn.Temp.ToString("0.0")} | {resultOut.Temp.ToString("0.0")}");
             }
             else
             {

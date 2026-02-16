@@ -64,14 +64,7 @@ namespace TempData_grupparbete.Services
                             string fullSring = rowCount + " " + time;
                             sb.AppendLine(fullSring);
                             rowCount++;
-                            if (data.DateTime.Year==2016 && data.DateTime.Month==5)
-                            {
-                                continue;
-                            }
-                            if(data.DateTime.Year ==2017 && data.DateTime.Month == 1)
-                            {
-                                continue;
-                            }
+                           
                             Program.WeatherData.Add(data);
                         }
                         else

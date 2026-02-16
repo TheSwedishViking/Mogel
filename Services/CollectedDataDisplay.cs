@@ -392,16 +392,17 @@ namespace TempData_grupparbete.Services
                 }
 
             }
+            seasonStart = colderDays.Last();
             if (countStreak != 5)
             {
                 Console.WriteLine($"Hittade inte 5 dagar i rad för säsong {season}, vi hade istället {countStreak} i följd av temperatur under {autumnTemp}°C");
+           
             }
             else
             {
                 Console.WriteLine($"Det fanns dagar i rad under {autumnTemp}°C för att metrologisk {season} ska starta!");
+                Console.WriteLine($"{season} startar den {seasonStart.Date.ToString("yyyy-MM-dd")}");
             }
-            seasonStart = colderDays.Last();
-            Console.WriteLine($"{season} startar den {seasonStart.Date.ToString("yyyy-MM-dd")}");
             Console.WriteLine($"{countStreak} dagar i rad från dessa dagar;");
             foreach (var day in colderDays)
             {
